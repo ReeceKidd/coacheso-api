@@ -7,7 +7,9 @@
     "test:unit": "jest --config=./jest.unit.config.js --coverage --detectOpenHandles",
     "start": "ts-node --transpile-only server/index.ts",
     "dev": "nodemon server/index.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:js:fix": "npm run lint:js -- --fix"
   },
   "keywords": [],
   "author": "",
@@ -39,5 +41,10 @@
   },
   "devDependencies": {
     "husky": "^6.0.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint . --fix"
+    ]
   }
 }
