@@ -6,7 +6,8 @@
   "scripts": {
     "test:unit": "jest --config=./jest.unit.config.js --coverage --detectOpenHandles",
     "start": "ts-node --transpile-only server/index.ts",
-    "dev": "nodemon server/index.ts"
+    "dev": "nodemon server/index.ts",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
