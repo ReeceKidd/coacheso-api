@@ -37,10 +37,7 @@
     "type-graphql": "^1.1.1",
     "typescript": "^4.2.4"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn run build && yarn run test:unit"
-    }
+  "devDependencies": {
+    "husky": "^6.0.0"
   }
 }
