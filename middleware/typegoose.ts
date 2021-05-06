@@ -20,6 +20,7 @@ export const TypegooseMiddleware: MiddlewareFn = async (_, next) => {
 
 function convertDocument(doc: Document) {
   const convertedDocument = doc.toObject()
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const DocumentClass = getClassForDocument(doc)!
   Object.setPrototypeOf(convertedDocument, DocumentClass.prototype)
   return convertedDocument

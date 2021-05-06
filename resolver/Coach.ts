@@ -1,21 +1,22 @@
-import { Resolver, Query, Arg, Ctx } from 'type-graphql'
-import { ObjectId } from 'mongodb'
-import { MyContext } from '../types/MyContext'
+import { Resolver, Query, Arg, Mutation } from 'type-graphql'
+import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
-import { ObjectIdScalar } from '../schema/object-id.scalar'
 
 @Resolver(() => Coach)
 export class CoachResolver {
-  @Query(() => Coach, { nullable: true })
-  async Coach(@Arg('CoachId', () => ObjectIdScalar) CoachId: ObjectId) {
-    return await CoachModel.findById(CoachId)
+  @Query(() => [Coach])
+  async coaches(@Arg('activity') activity: string): Promise<Coach[]> {
+    return await CoachModel.find({ activities: activity })
   }
 
-  @Query(() => Coach, { nullable: true })
-  async currentCoach(
-    @Ctx()
-    ctx: MyContext
-  ): Promise<Coach | null> {
-    return await CoachModel.findById(ctx.res.locals.CoachId)
+  @Mutation(() => Coach)
+  async addCoach(@Arg('input') input: CoachInput): Promise<Coach> {
+    const coach = new CoachModel({
+      ...input,
+    })
+
+    await coach.save()
+
+    return coach
   }
 }
