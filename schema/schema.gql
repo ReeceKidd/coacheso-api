@@ -5,36 +5,23 @@
 
 type Coach {
   _id: ObjectId!
-  email: String!
+  activities: [String!]!
+  name: String!
 }
 
-type Lesson {
-  _id: ObjectId!
-  title: String!
-}
-
-input LessonInput {
+input CoachInput {
+  activities: [String!]!
   id: ObjectId
-  title: String!
+  name: String!
 }
 
 type Mutation {
-  addLesson(input: LessonInput!): Lesson!
+  addCoach(input: CoachInput!): Coach!
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
-  Coach(CoachId: ObjectId!): Coach
-  Lesson(LessonId: ObjectId!): Lesson
-  currentCoach: Coach
-  currentLesson: Lesson
-  currentUser: User
-  user(userId: ObjectId!): User
-}
-
-type User {
-  _id: ObjectId!
-  email: String!
+  coaches(activity: String!): [Coach!]!
 }

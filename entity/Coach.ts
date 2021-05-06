@@ -9,10 +9,11 @@ export class Coach {
 
   @Field()
   @Property({ required: true })
-  email: string
+  name: string
 
-  @Property({ required: true })
-  password: string
+  @Field((_type) => [String])
+  @Property()
+  activities: string[]
 }
 
 export const CoachModel = getModelForClass(Coach)
