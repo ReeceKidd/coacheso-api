@@ -5,8 +5,13 @@ import { Coach, CoachModel } from '../entity/Coach'
 @Resolver(() => Coach)
 export class CoachResolver {
   @Query(() => [Coach])
-  async coaches(@Arg('activity') activity: string): Promise<Coach[]> {
-    return await CoachModel.find({ activities: activity })
+  async coaches(
+    @Arg('activity', { nullable: true }) activity?: string
+  ): Promise<Coach[]> {
+    if (activity) {
+      return await CoachModel.find({ activities: activity })
+    }
+    return await CoachModel.find({})
   }
 
   @Mutation(() => Coach)

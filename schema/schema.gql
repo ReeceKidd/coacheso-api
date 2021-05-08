@@ -22,5 +22,5 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  coaches(activity: String!): [Coach!]!
+  coaches(activity: String): [Coach!]!
 }
