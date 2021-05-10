@@ -23,4 +23,11 @@ scalar ObjectId
 
 type Query {
   coaches(activity: String): [Coach!]!
+  currentUser: User
+  user(userId: ObjectId!): User
+}
+
+type User {
+  _id: ObjectId!
+  email: String!
 }
