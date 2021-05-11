@@ -5,6 +5,9 @@ describe('getServiceConfig', () => {
     NODE_ENV: 'NODE_ENV',
     PORT: 'PORT',
     DATABASE_URI: 'DATABASE_URI',
+    AUTH0_CLIENT_ID: 'AUTH0_CLIENT_ID',
+    AUTH0_DOMAIN: 'AUTH0_DOMAIN',
+    AUTH0_CLIENT_SECRET: 'AUTH0_CLIENT_SECRET',
   }
 
   test('that correct error is thrown when NODE_ENV is not provided', () => {
@@ -46,6 +49,34 @@ describe('getServiceConfig', () => {
       getServiceConfig(environment)
     } catch (err) {
       expect(err.message).toEqual('DATABASE_URI is not provided.')
+    }
+  })
+
+  test('that correct error is thrown when AUTH0_CLIENT_ID is not provided', () => {
+    expect.assertions(1)
+    const environment = {
+      ...environmentMock,
+      AUTH0_CLIENT_ID: undefined,
+    }
+
+    try {
+      getServiceConfig(environment)
+    } catch (err) {
+      expect(err.message).toEqual('AUTH0_CLIENT_ID is not provided.')
+    }
+  })
+
+  test('that correct error is thrown when AUTH0_DOMAIN is not provided', () => {
+    expect.assertions(1)
+    const environment = {
+      ...environmentMock,
+      AUTH0_DOMAIN: undefined,
+    }
+
+    try {
+      getServiceConfig(environment)
+    } catch (err) {
+      expect(err.message).toEqual('AUTH0_DOMAIN is not provided.')
     }
   })
 })
