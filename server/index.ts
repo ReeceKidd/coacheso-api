@@ -6,17 +6,37 @@ import cors from 'cors'
 import createSchema from '../schema'
 import createSession from '../session'
 
+import session from 'express-session'
+import passport from 'passport'
+
 import { getServiceConfig } from '../getServiceConfig'
-const { PORT } = getServiceConfig()
+const { NODE_ENV, PORT, AUTH0_CLIENT_SECRET } = getServiceConfig()
 
 const port = PORT || 8000
 
+const sess = {
+  secret: AUTH0_CLIENT_SECRET,
+  cookie: {
+    secure: false,
+  },
+  resave: false,
+  saveUninitialized: true,
+}
+
 async function createServer() {
   try {
+    if (NODE_ENV === 'production') {
+      sess.cookie.secure = true
+    }
     // 1. create mongoose connection
     await createSession()
     // 2. create express server
     const app = express()
+
+    app.use(session(sess))
+
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     // allow CORS from client app
     const corsOptions = {
@@ -30,7 +50,6 @@ async function createServer() {
 
     const schema = await createSchema()
 
-    // 3. create GraphQL server
     const apolloServer = new ApolloServer({
       schema,
       context: ({ req, res }) => ({ req, res }),
