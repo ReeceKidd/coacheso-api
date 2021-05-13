@@ -41,10 +41,6 @@ async function createServer() {
 
     app.use(jwtCheck)
 
-    app.use((req, _res) => {
-      console.log(req.user)
-    })
-
     const schema = await createSchema()
 
     const apolloServer = new ApolloServer({

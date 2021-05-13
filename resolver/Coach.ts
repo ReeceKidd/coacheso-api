@@ -8,10 +8,7 @@ export class CoachResolver {
   async coaches(
     @Arg('activity', { nullable: true }) activity?: string
   ): Promise<Coach[]> {
-    if (activity) {
-      return await CoachModel.find({ activities: activity })
-    }
-    return await CoachModel.find({})
+    return CoachModel.find(activity ? { activities: activity } : {})
   }
 
   @Mutation(() => Coach)
