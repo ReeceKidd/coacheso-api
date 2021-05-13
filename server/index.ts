@@ -2,51 +2,48 @@ import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import cors from 'cors'
+import jwt from 'express-jwt'
+import jwks from 'jwks-rsa'
 
 import createSchema from '../schema'
 import createSession from '../session'
 
-import session from 'express-session'
-import passport from 'passport'
-
 import { getServiceConfig } from '../getServiceConfig'
-const { NODE_ENV, PORT, AUTH0_CLIENT_SECRET } = getServiceConfig()
+const { PORT } = getServiceConfig()
 
 const port = PORT || 8000
 
-const sess = {
-  secret: AUTH0_CLIENT_SECRET,
-  cookie: {
-    secure: false,
-  },
-  resave: false,
-  saveUninitialized: true,
-}
+const jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://coacheso.eu.auth0.com/.well-known/jwks.json',
+  }),
+  audience: 'YfYKGExtgLg9OgazHjp2Z28ldGDMGW4J',
+  issuer: 'https://coacheso.eu.auth0.com/',
+  algorithms: ['RS256'],
+})
 
 async function createServer() {
   try {
-    if (NODE_ENV === 'production') {
-      sess.cookie.secure = true
-    }
-    // 1. create mongoose connection
     await createSession()
-    // 2. create express server
+
     const app = express()
 
-    app.use(session(sess))
-
-    app.use(passport.initialize())
-    app.use(passport.session())
-
-    // allow CORS from client app
     const corsOptions = {
       origin: 'http://localhost:3000',
       credentials: true,
     }
     app.use(cors(corsOptions))
 
-    // allow JSON requests
     app.use(express.json())
+
+    app.use(jwtCheck)
+
+    app.use((req, _res) => {
+      console.log(req.user)
+    })
 
     const schema = await createSchema()
 
