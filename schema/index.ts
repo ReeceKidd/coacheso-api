@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb'
 import path from 'path'
 
 import { ObjectIdScalar } from './object-id.scalar'
-import { TypegooseMiddleware } from '../middleware/typegoose'
+import { TypegooseMiddleware } from '../graphql-middleware/typegoose'
 import { CoachResolver } from '../resolver/Coach'
 import { UserResolver } from '../resolver/User'
 

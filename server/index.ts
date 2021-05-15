@@ -2,28 +2,15 @@ import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import cors from 'cors'
-import jwt from 'express-jwt'
-import jwks from 'jwks-rsa'
 
 import createSchema from '../schema'
 import createSession from '../session'
 
 import { getServiceConfig } from '../getServiceConfig'
+import { getAuthenticatedUser } from '../express-middleware/getAuthenticatedUser'
 const { PORT } = getServiceConfig()
 
 const port = PORT || 8000
-
-const jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: 'https://coacheso.eu.auth0.com/.well-known/jwks.json',
-  }),
-  audience: 'YfYKGExtgLg9OgazHjp2Z28ldGDMGW4J',
-  issuer: 'https://coacheso.eu.auth0.com/',
-  algorithms: ['RS256'],
-})
 
 async function createServer() {
   try {
@@ -39,7 +26,7 @@ async function createServer() {
 
     app.use(express.json())
 
-    app.use(jwtCheck)
+    app.use(getAuthenticatedUser)
 
     const schema = await createSchema()
 
