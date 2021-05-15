@@ -30,4 +30,10 @@ type Query {
 type User {
   _id: ObjectId!
   email: String!
+  emailVerified: String!
+  familyName: String!
+  givenName: String!
+  locale: String!
+  name: String!
+  picture: String!
 }

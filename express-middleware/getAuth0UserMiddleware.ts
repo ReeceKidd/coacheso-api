@@ -18,7 +18,18 @@ function getKey(
   })
 }
 
-export const getAuthenticatedUser = async (
+export type Auth0User = {
+  email: string
+  given_name: string
+  family_name: string
+  nickname: string
+  name: string
+  picture: string
+  locale: string
+  email_verified: string
+}
+
+export const getAuth0UserMiddleware = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -28,7 +39,7 @@ export const getAuthenticatedUser = async (
     if (token) {
       const bearerToken = token.split(' ')
 
-      response.locals.user = await new Promise((resolve, reject) => {
+      response.locals.auth0User = await new Promise((resolve, reject) => {
         jwt.verify(
           bearerToken[1],
           getKey,
@@ -41,12 +52,11 @@ export const getAuthenticatedUser = async (
               reject({ error })
             }
             if (user) {
-              resolve(user)
+              resolve(user as Auth0User)
             }
           }
         )
       })
-      return next()
     }
     return next()
   } catch (err) {

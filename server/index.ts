@@ -7,7 +7,8 @@ import createSchema from '../schema'
 import createSession from '../session'
 
 import { getServiceConfig } from '../getServiceConfig'
-import { getAuthenticatedUser } from '../express-middleware/getAuthenticatedUser'
+import { getAuth0UserMiddleware } from '../express-middleware/getAuth0UserMiddleware'
+import { updateAuthenticatedUserMiddleware } from '../express-middleware/updateAuthenticatedUserMiddleware'
 const { PORT } = getServiceConfig()
 
 const port = PORT || 8000
@@ -26,7 +27,8 @@ async function createServer() {
 
     app.use(express.json())
 
-    app.use(getAuthenticatedUser)
+    app.use(getAuth0UserMiddleware)
+    app.use(updateAuthenticatedUserMiddleware)
 
     const schema = await createSchema()
 
