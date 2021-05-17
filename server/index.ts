@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
-import express from 'express'
+import express, { Response, Request } from 'express'
 import cors from 'cors'
 
 import createSchema from '../schema'
@@ -27,6 +27,14 @@ async function createServer() {
     app.use(cors(corsOptions))
 
     app.use(express.json())
+
+    app.get('/health', (_request: Request, response: Response) => {
+      response.send({
+        uptime: process.uptime(),
+        message: 'OK',
+        timestamp: Date.now(),
+      })
+    })
 
     app.use(getAuth0UserMiddleware)
     app.use(updateAuthenticatedUserMiddleware)
