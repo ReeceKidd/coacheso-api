@@ -14,6 +14,14 @@ export class Coach {
   @Field((_type) => [String])
   @Property()
   activities: string[]
+
+  @Field()
+  @Property()
+  title: string
+
+  @Field()
+  @Property()
+  background: string
 }
 
 export const CoachModel = getModelForClass(Coach)
