@@ -15,4 +15,7 @@ export class CoachInput implements Partial<Coach> {
 
   @Field()
   background: string
+
+  @Field({ nullable: true })
+  profilePicture?: string
 }
