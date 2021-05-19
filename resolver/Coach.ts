@@ -1,6 +1,7 @@
-import { Resolver, Query, Arg, Mutation } from 'type-graphql'
+import { Resolver, Query, Arg, Mutation, UseMiddleware } from 'type-graphql'
 import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
+import { isAuth } from '../graphql-middleware/isAuth'
 
 @Resolver(() => Coach)
 export class CoachResolver {
@@ -12,6 +13,7 @@ export class CoachResolver {
   }
 
   @Mutation(() => Coach)
+  @UseMiddleware(isAuth)
   async addCoach(@Arg('input') input: CoachInput): Promise<Coach> {
     const coach = new CoachModel({
       ...input,

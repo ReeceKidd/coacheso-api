@@ -6,12 +6,16 @@
 type Coach {
   _id: ObjectId!
   activities: [String!]!
+  background: String!
   name: String!
+  title: String!
 }
 
 input CoachInput {
   activities: [String!]!
+  background: String!
   name: String!
+  title: String!
 }
 
 type Mutation {

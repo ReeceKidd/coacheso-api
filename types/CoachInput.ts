@@ -9,4 +9,10 @@ export class CoachInput implements Partial<Coach> {
 
   @Field((_type) => [String])
   activities: string[]
+
+  @Field()
+  title: string
+
+  @Field()
+  background: string
 }
