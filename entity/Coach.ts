@@ -15,13 +15,17 @@ export class Coach {
   @Property()
   activities: string[]
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  title: string
+  title?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  background: string
+  background?: string
+
+  @Field({ nullable: true })
+  @Property()
+  profilePicture?: string
 }
 
 export const CoachModel = getModelForClass(Coach)

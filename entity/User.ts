@@ -11,29 +11,29 @@ export class User {
   @Property({ required: true })
   email: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  givenName: string
+  givenName?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  familyName: string
+  familyName?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  name: string
+  name?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  picture: string
+  picture?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  locale: string
+  locale?: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  emailVerified: string
+  emailVerified?: string
 }
 
 export const UserModel = getModelForClass(User)
