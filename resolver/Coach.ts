@@ -1,7 +1,16 @@
-import { Resolver, Query, Arg, Mutation, UseMiddleware } from 'type-graphql'
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  UseMiddleware,
+  Ctx,
+} from 'type-graphql'
+import { isAuth } from '../graphql-middleware/isAuth'
 import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
-import { isAuth } from '../graphql-middleware/isAuth'
+import { UserModel } from '../entity/User'
+import { MyContext } from 'types/MyContext'
 
 @Resolver(() => Coach)
 export class CoachResolver {
@@ -14,10 +23,21 @@ export class CoachResolver {
 
   @Mutation(() => Coach)
   @UseMiddleware(isAuth)
-  async addCoach(@Arg('input') input: CoachInput): Promise<Coach> {
+  async addCoach(
+    @Ctx()
+    ctx: MyContext,
+    @Arg('input') input: CoachInput
+  ): Promise<Coach> {
     const coach = new CoachModel({
       ...input,
     })
+
+    ctx.res.locals.user = await UserModel.findByIdAndUpdate(
+      ctx.res.locals.user._id,
+      {
+        isCoach: true,
+      }
+    )
 
     await coach.save()
 

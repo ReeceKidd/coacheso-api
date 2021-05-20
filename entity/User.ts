@@ -11,6 +11,10 @@ export class User {
   @Property({ required: true })
   email: string
 
+  @Field()
+  @Property()
+  isCoach: boolean
+
   @Field({ nullable: true })
   @Property()
   givenName?: string
