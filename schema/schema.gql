@@ -39,6 +39,7 @@ type User {
   emailVerified: String
   familyName: String
   givenName: String
+  isCoach: Boolean!
   locale: String
   name: String
   picture: String

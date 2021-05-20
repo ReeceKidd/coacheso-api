@@ -36,6 +36,7 @@ export const getAuth0UserMiddleware = async (
 ): Promise<void> => {
   try {
     const token = request.headers['authorization']
+
     if (token) {
       const bearerToken = token.split(' ')
 
@@ -60,6 +61,7 @@ export const getAuth0UserMiddleware = async (
     }
     return next()
   } catch (err) {
-    next(err)
+    err.error.status = 401
+    next(err.error)
   }
 }
