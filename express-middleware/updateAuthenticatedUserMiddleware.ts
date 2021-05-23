@@ -1,39 +1,51 @@
 import { UserModel } from '../entity/User'
 import { Request, Response, NextFunction } from 'express'
-import { Auth0User } from './getAuth0UserMiddleware'
+
+import axios from 'axios'
+
+import { getServiceConfig } from '../getServiceConfig'
+
+const { AUTH0_BASE_URL } = getServiceConfig()
 
 export const updateAuthenticatedUserMiddleware = async (
-  _request: Request,
+  request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const auth0User = response.locals.auth0User as Auth0User
+    const token = request.headers['authorization']
+    const isAuthenticated = response.locals.isAuthenticated as boolean
 
-    if (auth0User) {
+    if (isAuthenticated && token) {
+      const url = `${AUTH0_BASE_URL}/userInfo`
+
+      const { data } = await axios.get(url, {
+        headers: { Authorization: token },
+      })
+
       response.locals.user = await UserModel.findOneAndUpdate(
         {
-          email: auth0User.email,
+          email: data.email,
         },
         {
-          givenName: auth0User.given_name,
-          familyName: auth0User.family_name,
-          name: auth0User.name,
-          picture: auth0User.picture,
-          locale: auth0User.locale,
-          emailVerified: auth0User.email_verified,
+          givenName: data.given_name,
+          familyName: data.family_name,
+          name: data.name,
+          picture: data.picture,
+          locale: data.locale,
+          emailVerified: data.email_verified,
         }
       )
 
       if (!response.locals.user) {
         const databaseUser = await UserModel.create({
-          email: auth0User.email,
-          givenName: auth0User.given_name,
-          familyName: auth0User.family_name,
-          name: auth0User.name,
-          picture: auth0User.picture,
-          locale: auth0User.locale,
-          emailVerified: auth0User.email_verified,
+          email: data.email,
+          givenName: data.given_name,
+          familyName: data.family_name,
+          name: data.name,
+          picture: data.picture,
+          locale: data.locale,
+          emailVerified: data.email_verified,
         })
         response.locals.user = databaseUser
       }

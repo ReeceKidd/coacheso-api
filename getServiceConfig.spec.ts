@@ -6,6 +6,7 @@ describe('getServiceConfig', () => {
     PORT: 'PORT',
     DATABASE_URI: 'DATABASE_URI',
     COACHESO_APP_URL: 'COACHESO_APP__URL',
+    AUTH0_BASE_URL: 'AUTH0_BASE_URL',
   }
 
   test('that correct error is thrown when NODE_ENV is not provided', () => {
@@ -90,5 +91,26 @@ describe('getServiceConfig', () => {
 
     const environment = getServiceConfig()
     expect(environment.COACHESO_APP_URL).toBeDefined()
+  })
+
+  test('that correct error is thrown when AUTH0_BASE_URL is not provided', () => {
+    expect.assertions(1)
+    const environment = {
+      ...environmentMock,
+      AUTH0_BASE_URL: undefined,
+    }
+
+    try {
+      getServiceConfig(environment)
+    } catch (err) {
+      expect(err.message).toEqual('AUTH0_BASE_URL is not provided.')
+    }
+  })
+
+  test('that AUTH0_BASE_URL is returned', () => {
+    expect.assertions(1)
+
+    const environment = getServiceConfig()
+    expect(environment.AUTH0_BASE_URL).toBeDefined()
   })
 })
