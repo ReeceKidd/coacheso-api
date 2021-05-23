@@ -29,7 +29,7 @@ export type Auth0User = {
   email_verified: string
 }
 
-export const getAuth0UserMiddleware = async (
+export const getIsAuthenticatedMiddleware = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -40,7 +40,7 @@ export const getAuth0UserMiddleware = async (
     if (token) {
       const bearerToken = token.split(' ')
 
-      response.locals.auth0User = await new Promise((resolve, reject) => {
+      const validateAccessToken = await new Promise((resolve, reject) => {
         jwt.verify(
           bearerToken[1],
           getKey,
@@ -58,10 +58,11 @@ export const getAuth0UserMiddleware = async (
           }
         )
       })
+
+      response.locals.isAuthenticated = Boolean(validateAccessToken)
     }
     return next()
   } catch (err) {
-    err.error.status = 401
     next(err.error)
   }
 }

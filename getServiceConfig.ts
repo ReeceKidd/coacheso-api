@@ -6,6 +6,7 @@ export interface AppConfigHttp {
   PORT: string
   DATABASE_URI: string
   COACHESO_APP_URL: string
+  AUTH0_BASE_URL: string
 }
 
 export type AppConfig = AppConfigHttp
@@ -13,7 +14,8 @@ export type AppConfig = AppConfigHttp
 export const getServiceConfig = (
   environment: NodeJS.ProcessEnv = process.env
 ): AppConfig => {
-  const { NODE_ENV, PORT, DATABASE_URI, COACHESO_APP_URL } = environment
+  const { NODE_ENV, PORT, DATABASE_URI, COACHESO_APP_URL, AUTH0_BASE_URL } =
+    environment
 
   if (!NODE_ENV) throw new Error('NODE_ENV is not provided.')
 
@@ -23,10 +25,13 @@ export const getServiceConfig = (
 
   if (!COACHESO_APP_URL) throw new Error('COACHESO_APP_URL is not provided.')
 
+  if (!AUTH0_BASE_URL) throw new Error('AUTH0_BASE_URL is not provided.')
+
   return {
     NODE_ENV,
     PORT,
     DATABASE_URI,
     COACHESO_APP_URL,
+    AUTH0_BASE_URL,
   } as AppConfigHttp
 }

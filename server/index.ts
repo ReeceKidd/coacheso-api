@@ -7,7 +7,7 @@ import createSchema from '../schema'
 import createSession from '../session'
 
 import { getServiceConfig } from '../getServiceConfig'
-import { getAuth0UserMiddleware } from '../express-middleware/getAuth0UserMiddleware'
+import { getIsAuthenticatedMiddleware } from '../express-middleware/getIsAuthenticatedMiddleware'
 import { updateAuthenticatedUserMiddleware } from '../express-middleware/updateAuthenticatedUserMiddleware'
 
 const { PORT, COACHESO_APP_URL } = getServiceConfig()
@@ -35,7 +35,7 @@ async function createServer() {
     })
   })
 
-  app.use(getAuth0UserMiddleware)
+  app.use(getIsAuthenticatedMiddleware)
   app.use(updateAuthenticatedUserMiddleware)
 
   const schema = await createSchema()
