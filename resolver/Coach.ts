@@ -10,7 +10,7 @@ import { isAuth } from '../graphql-middleware/isAuth'
 import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
-import { MyContext } from 'types/MyContext'
+import { MyContext } from '../types/MyContext'
 
 @Resolver(() => Coach)
 export class CoachResolver {
