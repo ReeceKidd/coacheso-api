@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server/index.js",
     "test:unit": "jest --config=./jest.unit.config.js --coverage --detectOpenHandles",
     "dev": "nodemon server/index.ts",
     "prepare": "husky install",
