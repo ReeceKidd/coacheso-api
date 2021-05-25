@@ -21,7 +21,7 @@ export class UserResolver {
     ctx: MyContext
   ): Promise<User | null> {
     const currentUser = await UserModel.findById(ctx.res.locals.user._id)
-    console.log('Current user', currentUser)
+
     return currentUser
   }
 }

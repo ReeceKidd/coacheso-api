@@ -27,10 +27,16 @@ const isAuth_1 = require("../graphql-middleware/isAuth");
 const CoachInput_1 = require("../types/CoachInput");
 const Coach_1 = require("../entity/Coach");
 const User_1 = require("../entity/User");
+const object_id_scalar_1 = require("../schema/object-id.scalar");
 let CoachResolver = class CoachResolver {
     coaches(activity) {
         return __awaiter(this, void 0, void 0, function* () {
             return Coach_1.CoachModel.find(activity ? { activities: activity } : {});
+        });
+    }
+    user(coachId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield Coach_1.CoachModel.findById(coachId);
         });
     }
     addCoach(ctx, input) {
@@ -51,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CoachResolver.prototype, "coaches", null);
+__decorate([
+    type_graphql_1.Query(() => Coach_1.Coach, { nullable: true }),
+    __param(0, type_graphql_1.Arg('coachId', () => object_id_scalar_1.ObjectIdScalar)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CoachResolver.prototype, "user", null);
 __decorate([
     type_graphql_1.Mutation(() => Coach_1.Coach),
     type_graphql_1.UseMiddleware(isAuth_1.isAuth),
