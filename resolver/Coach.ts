@@ -6,11 +6,13 @@ import {
   UseMiddleware,
   Ctx,
 } from 'type-graphql'
+import { ObjectId } from 'mongoose'
 import { isAuth } from '../graphql-middleware/isAuth'
 import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
 import { MyContext } from '../types/MyContext'
+import { ObjectIdScalar } from '../schema/object-id.scalar'
 
 @Resolver(() => Coach)
 export class CoachResolver {
@@ -19,6 +21,13 @@ export class CoachResolver {
     @Arg('activity', { nullable: true }) activity?: string
   ): Promise<Coach[]> {
     return CoachModel.find(activity ? { activities: activity } : {})
+  }
+
+  @Query(() => Coach, { nullable: true })
+  async coach(
+    @Arg('coachId', () => ObjectIdScalar) coachId: ObjectId
+  ): Promise<Coach | null> {
+    return await CoachModel.findById(coachId)
   }
 
   @Mutation(() => Coach)

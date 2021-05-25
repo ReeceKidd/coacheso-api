@@ -23,8 +23,6 @@ export const updateAuthenticatedUserMiddleware = async (
         headers: { Authorization: token },
       })
 
-      console.log('User info', data)
-
       response.locals.user = await UserModel.findOneAndUpdate(
         {
           email: data.email,
