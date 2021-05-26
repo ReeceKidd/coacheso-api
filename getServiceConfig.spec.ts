@@ -7,6 +7,7 @@ describe('getServiceConfig', () => {
     DATABASE_URI: 'DATABASE_URI',
     COACHESO_APP_URL: 'COACHESO_APP__URL',
     AUTH0_BASE_URL: 'AUTH0_BASE_URL',
+    STRIPE_SECRET_KEY: 'STRIPE_SECRET_KEY',
   }
 
   test('that correct error is thrown when NODE_ENV is not provided', () => {
@@ -112,5 +113,26 @@ describe('getServiceConfig', () => {
 
     const environment = getServiceConfig()
     expect(environment.AUTH0_BASE_URL).toBeDefined()
+  })
+
+  test('that correct error is thrown when STRIPE_SECRET_KEY is not provided', () => {
+    expect.assertions(1)
+    const environment = {
+      ...environmentMock,
+      STRIPE_SECRET_KEY: undefined,
+    }
+
+    try {
+      getServiceConfig(environment)
+    } catch (err) {
+      expect(err.message).toEqual('STRIPE_SECRET_KEY is not provided.')
+    }
+  })
+
+  test('that STRIPE_SECRET_KEY is returned', () => {
+    expect.assertions(1)
+
+    const environment = getServiceConfig()
+    expect(environment.STRIPE_SECRET_KEY).toBeDefined()
   })
 })

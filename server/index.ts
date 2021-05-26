@@ -9,6 +9,8 @@ import createSession from '../session'
 import { getServiceConfig } from '../getServiceConfig'
 import { getIsAuthenticatedMiddleware } from '../express-middleware/getIsAuthenticatedMiddleware'
 import { updateAuthenticatedUserMiddleware } from '../express-middleware/updateAuthenticatedUserMiddleware'
+import { createStandardAccountMiddleware } from '../express-middleware/stripe/createStandardAccountMiddleware'
+import { createAccountLinkMiddleware } from '../express-middleware/stripe/createAccountLinkMiddleware'
 
 const { PORT, COACHESO_APP_URL } = getServiceConfig()
 
@@ -34,6 +36,12 @@ async function createServer() {
       timestamp: Date.now(),
     })
   })
+
+  app.get(
+    '/stripe',
+    createStandardAccountMiddleware,
+    createAccountLinkMiddleware
+  )
 
   app.use(getIsAuthenticatedMiddleware)
   app.use(updateAuthenticatedUserMiddleware)
