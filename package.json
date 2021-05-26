@@ -46,6 +46,7 @@
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^8.149.0",
     "ts-jest": "^26.5.5",
     "ts-node": "^9.1.1",
     "type-graphql": "^1.1.1",
