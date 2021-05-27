@@ -18,9 +18,9 @@ import { ObjectIdScalar } from '../schema/object-id.scalar'
 export class CoachResolver {
   @Query(() => [Coach])
   async coaches(
-    @Arg('activity', { nullable: true }) activity?: string
+    @Arg('skill', { nullable: true }) skill?: string
   ): Promise<Coach[]> {
-    return CoachModel.find(activity ? { activities: activity } : {})
+    return CoachModel.find(skill ? { skills: skill } : {})
   }
 
   @Query(() => Coach, { nullable: true })
@@ -32,7 +32,7 @@ export class CoachResolver {
 
   @Mutation(() => Coach)
   @UseMiddleware(isAuth)
-  async addCoach(
+  async becomeCoach(
     @Ctx()
     ctx: MyContext,
     @Arg('input') input: CoachInput

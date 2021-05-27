@@ -7,13 +7,9 @@ export class Coach {
   @Field()
   readonly _id: ObjectId
 
-  @Field()
-  @Property({ required: true })
-  name: string
-
-  @Field((_type) => [String])
+  @Field({ nullable: true })
   @Property()
-  activities: string[]
+  name?: string
 
   @Field({ nullable: true })
   @Property()
@@ -21,11 +17,27 @@ export class Coach {
 
   @Field({ nullable: true })
   @Property()
-  background?: string
+  profilePicture?: string
 
   @Field({ nullable: true })
   @Property()
-  profilePicture?: string
+  description?: string
+
+  @Field({ nullable: true })
+  @Property()
+  skills?: string
+
+  @Field({ nullable: true })
+  @Property()
+  certifications?: string
+
+  @Field({ nullable: true })
+  @Property()
+  students?: string
+
+  @Field({ nullable: true })
+  @Property()
+  reviews?: string
 }
 
 export const CoachModel = getModelForClass(Coach)
