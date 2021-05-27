@@ -11,7 +11,7 @@ export class User {
   @Property({ required: true })
   email: string
 
-  @Field()
+  @Field({ defaultValue: false })
   @Property()
   isCoach: boolean
 
@@ -38,6 +38,10 @@ export class User {
   @Field({ nullable: true })
   @Property()
   emailVerified?: string
+
+  @Field({ nullable: true })
+  @Property()
+  username?: string
 }
 
 export const UserModel = getModelForClass(User)

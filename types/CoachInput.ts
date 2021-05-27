@@ -4,18 +4,15 @@ import { Coach } from '../entity/Coach'
 
 @InputType()
 export class CoachInput implements Partial<Coach> {
-  @Field()
-  name: string
+  @Field({ nullable: true })
+  name?: string
 
-  @Field((_type) => [String])
-  activities: string[]
-
-  @Field()
-  title: string
-
-  @Field()
-  background: string
+  @Field({ nullable: true })
+  title?: string
 
   @Field({ nullable: true })
   profilePicture?: string
+
+  @Field({ nullable: true })
+  description?: string
 }

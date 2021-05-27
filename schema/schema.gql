@@ -5,23 +5,25 @@
 
 type Coach {
   _id: ObjectId!
-  activities: [String!]!
-  background: String
-  name: String!
+  certifications: String
+  description: String
+  name: String
   profilePicture: String
+  reviews: String
+  skills: String
+  students: String
   title: String
 }
 
 input CoachInput {
-  activities: [String!]!
-  background: String!
-  name: String!
+  description: String
+  name: String
   profilePicture: String
-  title: String!
+  title: String
 }
 
 type Mutation {
-  addCoach(input: CoachInput!): Coach!
+  becomeCoach(input: CoachInput!): Coach!
 }
 
 """Mongo object id scalar type"""
@@ -29,7 +31,7 @@ scalar ObjectId
 
 type Query {
   coach(coachId: ObjectId!): Coach
-  coaches(activity: String): [Coach!]!
+  coaches(skill: String): [Coach!]!
   currentUser: User
   user(userId: ObjectId!): User
 }
@@ -40,8 +42,9 @@ type User {
   emailVerified: String
   familyName: String
   givenName: String
-  isCoach: Boolean!
+  isCoach: Boolean
   locale: String
   name: String
   picture: String
+  username: String
 }
