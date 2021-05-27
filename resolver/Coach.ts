@@ -16,6 +16,19 @@ import { ObjectIdScalar } from '../schema/object-id.scalar'
 
 @Resolver(() => Coach)
 export class CoachResolver {
+  @Query(() => Coach, { nullable: true })
+  @UseMiddleware(isAuth)
+  async currentCoach(
+    @Ctx()
+    ctx: MyContext
+  ): Promise<Coach | null> {
+    const currentCoach = await CoachModel.findOne({
+      userId: ctx.res.locals.user._id,
+    })
+
+    return currentCoach
+  }
+
   @Query(() => [Coach])
   async coaches(
     @Arg('skill', { nullable: true }) skill?: string
@@ -39,6 +52,7 @@ export class CoachResolver {
   ): Promise<Coach> {
     const coach = new CoachModel({
       ...input,
+      userId: ctx.res.locals.user._id,
     })
 
     ctx.res.locals.user = await UserModel.findByIdAndUpdate(
@@ -50,6 +64,25 @@ export class CoachResolver {
 
     await coach.save()
 
+    return coach
+  }
+
+  @Mutation(() => Coach)
+  @UseMiddleware(isAuth)
+  async updateCoach(
+    @Ctx()
+    ctx: MyContext,
+    @Arg('input') input: CoachInput
+  ): Promise<Coach> {
+    const coach = await CoachModel.findOneAndUpdate(
+      { userId: ctx.res.locals.user._id },
+      {
+        ...input,
+      }
+    )
+    if (!coach) {
+      throw new Error('Coach does not exist')
+    }
     return coach
   }
 }
