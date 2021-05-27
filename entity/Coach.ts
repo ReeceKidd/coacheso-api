@@ -7,6 +7,10 @@ export class Coach {
   @Field()
   readonly _id: ObjectId
 
+  @Field()
+  @Property()
+  userId: string
+
   @Field({ nullable: true })
   @Property()
   name?: string

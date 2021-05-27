@@ -13,6 +13,7 @@ type Coach {
   skills: String
   students: String
   title: String
+  userId: String!
 }
 
 input CoachInput {
@@ -24,6 +25,7 @@ input CoachInput {
 
 type Mutation {
   becomeCoach(input: CoachInput!): Coach!
+  updateCoach(input: CoachInput!): Coach!
 }
 
 """Mongo object id scalar type"""
@@ -32,6 +34,7 @@ scalar ObjectId
 type Query {
   coach(coachId: ObjectId!): Coach
   coaches(skill: String): [Coach!]!
+  currentCoach: Coach
   currentUser: User
   user(userId: ObjectId!): User
 }
