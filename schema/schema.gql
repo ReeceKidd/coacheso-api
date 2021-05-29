@@ -10,7 +10,7 @@ type Coach {
   name: String
   profilePicture: String
   reviews: String
-  skills: String
+  skills: [Skill!]
   students: String
   title: String
   userId: String!
@@ -20,6 +20,7 @@ input CoachInput {
   description: String
   name: String
   profilePicture: String
+  skills: [SkillInput!]
   title: String
 }
 
@@ -37,6 +38,14 @@ type Query {
   currentCoach: Coach
   currentUser: User
   user(userId: ObjectId!): User
+}
+
+type Skill {
+  skill: String!
+}
+
+input SkillInput {
+  skill: String!
 }
 
 type User {
