@@ -33,7 +33,7 @@ export class CoachResolver {
   async coaches(
     @Arg('skill', { nullable: true }) skill?: string
   ): Promise<Coach[]> {
-    return CoachModel.find(skill ? { skills: skill } : {})
+    return CoachModel.find(skill ? { 'skills.skill': skill } : {})
   }
 
   @Query(() => Coach, { nullable: true })
@@ -80,6 +80,7 @@ export class CoachResolver {
         ...input,
       }
     )
+
     if (!coach) {
       throw new Error('Coach does not exist')
     }

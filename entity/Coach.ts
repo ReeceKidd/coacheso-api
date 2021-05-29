@@ -3,6 +3,12 @@ import { ObjectId } from 'mongodb'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
+export class Skill {
+  @Field()
+  skill: string
+}
+
+@ObjectType()
 export class Coach {
   @Field()
   readonly _id: ObjectId
@@ -27,9 +33,9 @@ export class Coach {
   @Property()
   description?: string
 
-  @Field({ nullable: true })
+  @Field(() => [Skill], { defaultValue: [] })
   @Property()
-  skills?: string
+  skills?: Skill[]
 
   @Field({ nullable: true })
   @Property()
