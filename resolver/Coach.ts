@@ -8,7 +8,7 @@ import {
 } from 'type-graphql'
 import { ObjectId } from 'mongoose'
 import { isAuth } from '../graphql-middleware/isAuth'
-import { CoachInput } from '../types/CoachInput'
+import { CoachInput, SkillInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
 import { MyContext } from '../types/MyContext'
@@ -74,11 +74,25 @@ export class CoachResolver {
     ctx: MyContext,
     @Arg('input') input: CoachInput
   ): Promise<Coach> {
+    const { title, description, skills } = input
+    const updateValues: {
+      title?: string
+      description?: string
+      skills?: SkillInput[]
+    } = {}
+    if (title) {
+      updateValues.title = title
+    }
+    if (description) {
+      updateValues.description = description
+    }
+    if (skills) {
+      updateValues.skills = skills
+    }
+
     const coach = await CoachModel.findOneAndUpdate(
       { userId: ctx.res.locals.user._id },
-      {
-        ...input,
-      }
+      updateValues
     )
 
     if (!coach) {

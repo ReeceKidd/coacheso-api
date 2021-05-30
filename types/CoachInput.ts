@@ -1,9 +1,9 @@
 import { InputType, Field } from 'type-graphql'
 
-import { Coach, Skill } from '../entity/Coach'
+import { Coach } from '../entity/Coach'
 
 @InputType()
-export class SkillInput implements Partial<Skill> {
+export class SkillInput {
   @Field()
   skill: string
 }

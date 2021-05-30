@@ -10,7 +10,7 @@ type Coach {
   name: String
   profilePicture: String
   reviews: String
-  skills: [Skill!]
+  skills: [CoachSkill!]
   students: String
   title: String
   userId: String!
@@ -22,6 +22,10 @@ input CoachInput {
   profilePicture: String
   skills: [SkillInput!]
   title: String
+}
+
+type CoachSkill {
+  skill: String!
 }
 
 type Mutation {
@@ -37,10 +41,12 @@ type Query {
   coaches(skill: String): [Coach!]!
   currentCoach: Coach
   currentUser: User
+  skills(skill: String): [Skill!]!
   user(userId: ObjectId!): User
 }
 
 type Skill {
+  _id: ObjectId!
   skill: String!
 }
 
