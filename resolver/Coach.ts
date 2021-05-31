@@ -53,6 +53,8 @@ export class CoachResolver {
     const coach = new CoachModel({
       ...input,
       userId: ctx.res.locals.user._id,
+      username: ctx.res.locals.username,
+      name: ctx.res.locals.name,
     })
 
     ctx.res.locals.user = await UserModel.findByIdAndUpdate(
@@ -76,10 +78,12 @@ export class CoachResolver {
   ): Promise<Coach> {
     const { title, description, skills } = input
     const updateValues: {
+      username?: string
       title?: string
       description?: string
       skills?: SkillInput[]
     } = {}
+
     if (title) {
       updateValues.title = title
     }
