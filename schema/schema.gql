@@ -14,6 +14,7 @@ type Coach {
   students: String
   title: String
   userId: String!
+  username: String!
 }
 
 input CoachInput {
@@ -31,6 +32,7 @@ type CoachSkill {
 type Mutation {
   becomeCoach(input: CoachInput!): Coach!
   updateCoach(input: CoachInput!): Coach!
+  updateCurrentUser(input: UserInput!): User!
 }
 
 """Mongo object id scalar type"""
@@ -65,4 +67,8 @@ type User {
   name: String
   picture: String
   username: String
+}
+
+input UserInput {
+  username: String!
 }

@@ -8,6 +8,8 @@ export class CoachSkill {
   skill: string
 }
 
+// Update current coach
+
 @ObjectType()
 export class Coach {
   @Field()
@@ -17,8 +19,10 @@ export class Coach {
   @Property()
   userId: string
 
+  @Field()
+  username: string
+
   @Field({ nullable: true })
-  @Property()
   name?: string
 
   @Field({ nullable: true })

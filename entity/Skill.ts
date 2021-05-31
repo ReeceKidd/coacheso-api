@@ -1,4 +1,4 @@
-import { getModelForClass, prop } from '@typegoose/typegoose'
+import { getModelForClass, prop as Property } from '@typegoose/typegoose'
 import { ObjectId } from 'mongodb'
 import { Field, ObjectType } from 'type-graphql'
 
@@ -8,7 +8,7 @@ export class Skill {
   readonly _id: ObjectId
 
   @Field()
-  @prop({ required: true, index: true, unique: true })
+  @Property({ required: true, index: true, unique: true })
   skill: string
 }
 

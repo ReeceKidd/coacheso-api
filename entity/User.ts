@@ -7,6 +7,10 @@ export class User {
   @Field()
   readonly _id: ObjectId
 
+  @Field({ nullable: true })
+  @Property({ required: true, index: true, unique: true })
+  username: string
+
   @Field()
   @Property({ required: true })
   email: string
@@ -38,10 +42,6 @@ export class User {
   @Field({ nullable: true })
   @Property()
   emailVerified?: string
-
-  @Field({ nullable: true })
-  @Property()
-  username?: string
 }
 
 export const UserModel = getModelForClass(User)
