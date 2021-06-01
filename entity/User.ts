@@ -2,6 +2,11 @@ import { prop as Property, getModelForClass } from '@typegoose/typegoose'
 import { ObjectId } from 'mongodb'
 import { Field, ObjectType } from 'type-graphql'
 
+export enum UserMode {
+  coach = 'coach',
+  student = 'student',
+}
+
 @ObjectType()
 export class User {
   @Field()
@@ -15,9 +20,9 @@ export class User {
   @Property({ required: true })
   email: string
 
-  @Field({ defaultValue: false })
+  @Field(() => UserMode)
   @Property()
-  isCoach: boolean
+  mode: UserMode
 
   @Field({ nullable: true })
   @Property()
@@ -41,7 +46,7 @@ export class User {
 
   @Field({ nullable: true })
   @Property()
-  emailVerified?: string
+  emailVerified?: boolean
 }
 
 export const UserModel = getModelForClass(User)
