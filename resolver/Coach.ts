@@ -37,10 +37,8 @@ export class CoachResolver {
   }
 
   @Query(() => Coach, { nullable: true })
-  async coach(
-    @Arg('coachId', () => ObjectIdScalar) coachId: ObjectId
-  ): Promise<Coach | null> {
-    return await CoachModel.findById(coachId)
+  async coach(@Arg('username') username: string): Promise<Coach | null> {
+    return await CoachModel.findOne({ username })
   }
 
   @Mutation(() => Coach)
@@ -61,7 +59,8 @@ export class CoachResolver {
       ctx.res.locals.user._id,
       {
         isCoach: true,
-      }
+      },
+      { new: true }
     )
 
     await coach.save()
@@ -77,6 +76,7 @@ export class CoachResolver {
     @Arg('input') input: CoachInput
   ): Promise<Coach> {
     const { title, description, skills } = input
+
     const updateValues: {
       username?: string
       title?: string
@@ -96,7 +96,8 @@ export class CoachResolver {
 
     const coach = await CoachModel.findOneAndUpdate(
       { userId: ctx.res.locals.user._id },
-      updateValues
+      updateValues,
+      { new: true }
     )
 
     if (!coach) {

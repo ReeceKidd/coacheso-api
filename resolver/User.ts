@@ -9,7 +9,7 @@ import {
 import { ObjectId } from 'mongodb'
 import { MyContext } from '../types/MyContext'
 import { isAuth } from '../graphql-middleware/isAuth'
-import { User, UserModel } from '../entity/User'
+import { User, UserMode, UserModel } from '../entity/User'
 import { ObjectIdScalar } from '../schema/object-id.scalar'
 import { UserInput } from '../types/UserInput'
 
@@ -40,18 +40,25 @@ export class UserResolver {
     ctx: MyContext,
     @Arg('input') input: UserInput
   ): Promise<User> {
-    const { username } = input
+    const { username, mode } = input
+
     const updateValues: {
       username?: string
+      mode?: UserMode
     } = {}
 
     if (username) {
       updateValues.username = username
     }
 
+    if (mode) {
+      updateValues.mode = mode
+    }
+
     const user = await UserModel.findByIdAndUpdate(
       ctx.res.locals.user._id,
-      updateValues
+      updateValues,
+      { new: true }
     )
 
     if (!user) {

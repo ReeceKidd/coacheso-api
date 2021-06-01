@@ -1,9 +1,16 @@
-import { InputType, Field } from 'type-graphql'
+import { InputType, Field, registerEnumType } from 'type-graphql'
 
-import { User } from '../entity/User'
+import { User, UserMode } from '../entity/User'
+
+registerEnumType(UserMode, {
+  name: 'UserMode',
+})
 
 @InputType()
 export class UserInput implements Partial<User> {
-  @Field()
-  username: string
+  @Field({ nullable: true })
+  username?: string
+
+  @Field(() => UserMode, { nullable: true })
+  mode?: UserMode
 }

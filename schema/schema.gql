@@ -39,7 +39,7 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  coach(coachId: ObjectId!): Coach
+  coach(username: String!): Coach
   coaches(skill: String): [Coach!]!
   currentCoach: Coach
   currentUser: User
@@ -59,16 +59,22 @@ input SkillInput {
 type User {
   _id: ObjectId!
   email: String!
-  emailVerified: String
+  emailVerified: Boolean
   familyName: String
   givenName: String
-  isCoach: Boolean
   locale: String
+  mode: UserMode!
   name: String
   picture: String
   username: String
 }
 
 input UserInput {
-  username: String!
+  mode: UserMode
+  username: String
+}
+
+enum UserMode {
+  coach
+  student
 }
