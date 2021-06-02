@@ -26,7 +26,6 @@ const updateAuthenticatedUserMiddleware = (request, response, next) => __awaiter
             const { data } = yield axios_1.default.get(url, {
                 headers: { Authorization: token },
             });
-            console.log('User info', data);
             response.locals.user = yield User_1.UserModel.findOneAndUpdate({
                 email: data.email,
             }, {

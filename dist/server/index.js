@@ -19,8 +19,8 @@ const cors_1 = __importDefault(require("cors"));
 const schema_1 = __importDefault(require("../schema"));
 const session_1 = __importDefault(require("../session"));
 const getServiceConfig_1 = require("../getServiceConfig");
-const getIsAuthenticatedMiddleware_1 = require("../express-middleware/getIsAuthenticatedMiddleware");
-const updateAuthenticatedUserMiddleware_1 = require("../express-middleware/updateAuthenticatedUserMiddleware");
+const createStandardAccountMiddleware_1 = require("../express-middleware/stripe/createStandardAccountMiddleware");
+const createAccountLinkMiddleware_1 = require("../express-middleware/stripe/createAccountLinkMiddleware");
 const { PORT, COACHESO_APP_URL } = getServiceConfig_1.getServiceConfig();
 const port = PORT || 8000;
 function createServer() {
@@ -40,8 +40,7 @@ function createServer() {
                 timestamp: Date.now(),
             });
         });
-        app.use(getIsAuthenticatedMiddleware_1.getIsAuthenticatedMiddleware);
-        app.use(updateAuthenticatedUserMiddleware_1.updateAuthenticatedUserMiddleware);
+        app.get('/stripe', createStandardAccountMiddleware_1.createStandardAccountMiddleware, createAccountLinkMiddleware_1.createAccountLinkMiddleware);
         const schema = yield schema_1.default();
         const apolloServer = new apollo_server_express_1.ApolloServer({
             schema,

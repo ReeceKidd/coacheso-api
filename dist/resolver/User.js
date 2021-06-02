@@ -27,6 +27,7 @@ const mongodb_1 = require("mongodb");
 const isAuth_1 = require("../graphql-middleware/isAuth");
 const User_1 = require("../entity/User");
 const object_id_scalar_1 = require("../schema/object-id.scalar");
+const UserInput_1 = require("../types/UserInput");
 let UserResolver = class UserResolver {
     user(userId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,8 +37,24 @@ let UserResolver = class UserResolver {
     currentUser(ctx) {
         return __awaiter(this, void 0, void 0, function* () {
             const currentUser = yield User_1.UserModel.findById(ctx.res.locals.user._id);
-            console.log('Current user', currentUser);
             return currentUser;
+        });
+    }
+    updateCurrentUser(ctx, input) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { username, mode } = input;
+            const updateValues = {};
+            if (username) {
+                updateValues.username = username;
+            }
+            if (mode) {
+                updateValues.mode = mode;
+            }
+            const user = yield User_1.UserModel.findByIdAndUpdate(ctx.res.locals.user._id, updateValues, { new: true });
+            if (!user) {
+                throw new Error('User does not exist');
+            }
+            return user;
         });
     }
 };
@@ -56,6 +73,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "currentUser", null);
+__decorate([
+    type_graphql_1.Mutation(() => User_1.User),
+    type_graphql_1.UseMiddleware(isAuth_1.isAuth),
+    __param(0, type_graphql_1.Ctx()),
+    __param(1, type_graphql_1.Arg('input')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, UserInput_1.UserInput]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateCurrentUser", null);
 UserResolver = __decorate([
     type_graphql_1.Resolver(() => User_1.User)
 ], UserResolver);

@@ -9,30 +9,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoachInput = void 0;
+exports.CoachInput = exports.SkillInput = void 0;
 const type_graphql_1 = require("type-graphql");
-let CoachInput = class CoachInput {
+let SkillInput = class SkillInput {
 };
 __decorate([
     type_graphql_1.Field(),
     __metadata("design:type", String)
+], SkillInput.prototype, "skill", void 0);
+SkillInput = __decorate([
+    type_graphql_1.InputType()
+], SkillInput);
+exports.SkillInput = SkillInput;
+let CoachInput = class CoachInput {
+};
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", String)
 ], CoachInput.prototype, "name", void 0);
 __decorate([
-    type_graphql_1.Field((_type) => [String]),
-    __metadata("design:type", Array)
-], CoachInput.prototype, "activities", void 0);
-__decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field({ nullable: true }),
     __metadata("design:type", String)
 ], CoachInput.prototype, "title", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], CoachInput.prototype, "background", void 0);
 __decorate([
     type_graphql_1.Field({ nullable: true }),
     __metadata("design:type", String)
 ], CoachInput.prototype, "profilePicture", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", String)
+], CoachInput.prototype, "description", void 0);
+__decorate([
+    type_graphql_1.Field(() => [SkillInput], { nullable: true }),
+    __metadata("design:type", Array)
+], CoachInput.prototype, "skills", void 0);
 CoachInput = __decorate([
     type_graphql_1.InputType()
 ], CoachInput);

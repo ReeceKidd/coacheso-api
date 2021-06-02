@@ -19,10 +19,11 @@ const object_id_scalar_1 = require("./object-id.scalar");
 const typegoose_1 = require("../graphql-middleware/typegoose");
 const Coach_1 = require("../resolver/Coach");
 const User_1 = require("../resolver/User");
+const Skill_1 = require("../resolver/Skill");
 function createSchema() {
     return __awaiter(this, void 0, void 0, function* () {
         const schema = yield type_graphql_1.buildSchema({
-            resolvers: [Coach_1.CoachResolver, User_1.UserResolver],
+            resolvers: [Coach_1.CoachResolver, User_1.UserResolver, Skill_1.SkillResolver],
             emitSchemaFile: path_1.default.resolve(__dirname, 'schema.gql'),
             globalMiddlewares: [typegoose_1.TypegooseMiddleware],
             scalarsMap: [{ type: mongodb_1.ObjectId, scalar: object_id_scalar_1.ObjectIdScalar }],
