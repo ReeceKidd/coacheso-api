@@ -9,10 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModel = exports.User = void 0;
+exports.UserModel = exports.User = exports.UserMode = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const mongodb_1 = require("mongodb");
 const type_graphql_1 = require("type-graphql");
+var UserMode;
+(function (UserMode) {
+    UserMode["coach"] = "coach";
+    UserMode["student"] = "student";
+})(UserMode = exports.UserMode || (exports.UserMode = {}));
 let User = class User {
 };
 __decorate([
@@ -20,15 +25,20 @@ __decorate([
     __metadata("design:type", mongodb_1.ObjectId)
 ], User.prototype, "_id", void 0);
 __decorate([
+    type_graphql_1.Field({ nullable: true }),
+    typegoose_1.prop({ required: true, index: true, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
     type_graphql_1.Field(),
     typegoose_1.prop({ required: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field(() => UserMode),
     typegoose_1.prop(),
-    __metadata("design:type", Boolean)
-], User.prototype, "isCoach", void 0);
+    __metadata("design:type", String)
+], User.prototype, "mode", void 0);
 __decorate([
     type_graphql_1.Field({ nullable: true }),
     typegoose_1.prop(),
@@ -57,7 +67,7 @@ __decorate([
 __decorate([
     type_graphql_1.Field({ nullable: true }),
     typegoose_1.prop(),
-    __metadata("design:type", String)
+    __metadata("design:type", Boolean)
 ], User.prototype, "emailVerified", void 0);
 User = __decorate([
     type_graphql_1.ObjectType()

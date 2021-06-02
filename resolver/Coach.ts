@@ -6,13 +6,12 @@ import {
   UseMiddleware,
   Ctx,
 } from 'type-graphql'
-import { ObjectId } from 'mongoose'
+
 import { isAuth } from '../graphql-middleware/isAuth'
 import { CoachInput, SkillInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
 import { MyContext } from '../types/MyContext'
-import { ObjectIdScalar } from '../schema/object-id.scalar'
 
 @Resolver(() => Coach)
 export class CoachResolver {

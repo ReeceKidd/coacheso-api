@@ -7,7 +7,7 @@ exports.getServiceConfig = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const getServiceConfig = (environment = process.env) => {
-    const { NODE_ENV, PORT, DATABASE_URI, COACHESO_APP_URL, AUTH0_BASE_URL } = environment;
+    const { NODE_ENV, PORT, DATABASE_URI, COACHESO_APP_URL, AUTH0_BASE_URL, STRIPE_SECRET_KEY, } = environment;
     if (!NODE_ENV)
         throw new Error('NODE_ENV is not provided.');
     if (!PORT)
@@ -18,12 +18,15 @@ const getServiceConfig = (environment = process.env) => {
         throw new Error('COACHESO_APP_URL is not provided.');
     if (!AUTH0_BASE_URL)
         throw new Error('AUTH0_BASE_URL is not provided.');
+    if (!STRIPE_SECRET_KEY)
+        throw new Error('STRIPE_SECRET_KEY is not provided.');
     return {
         NODE_ENV,
         PORT,
         DATABASE_URI,
         COACHESO_APP_URL,
         AUTH0_BASE_URL,
+        STRIPE_SECRET_KEY,
     };
 };
 exports.getServiceConfig = getServiceConfig;

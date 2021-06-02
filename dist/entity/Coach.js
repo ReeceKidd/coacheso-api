@@ -9,10 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoachModel = exports.Coach = void 0;
+exports.CoachModel = exports.Coach = exports.CoachSkill = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const mongodb_1 = require("mongodb");
 const type_graphql_1 = require("type-graphql");
+let CoachSkill = class CoachSkill {
+};
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], CoachSkill.prototype, "skill", void 0);
+CoachSkill = __decorate([
+    type_graphql_1.ObjectType()
+], CoachSkill);
+exports.CoachSkill = CoachSkill;
 let Coach = class Coach {
 };
 __decorate([
@@ -21,14 +31,17 @@ __decorate([
 ], Coach.prototype, "_id", void 0);
 __decorate([
     type_graphql_1.Field(),
-    typegoose_1.prop({ required: true }),
+    typegoose_1.prop(),
+    __metadata("design:type", String)
+], Coach.prototype, "userId", void 0);
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], Coach.prototype, "username", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
     __metadata("design:type", String)
 ], Coach.prototype, "name", void 0);
-__decorate([
-    type_graphql_1.Field((_type) => [String]),
-    typegoose_1.prop(),
-    __metadata("design:type", Array)
-], Coach.prototype, "activities", void 0);
 __decorate([
     type_graphql_1.Field({ nullable: true }),
     typegoose_1.prop(),
@@ -38,12 +51,32 @@ __decorate([
     type_graphql_1.Field({ nullable: true }),
     typegoose_1.prop(),
     __metadata("design:type", String)
-], Coach.prototype, "background", void 0);
+], Coach.prototype, "profilePicture", void 0);
 __decorate([
     type_graphql_1.Field({ nullable: true }),
     typegoose_1.prop(),
     __metadata("design:type", String)
-], Coach.prototype, "profilePicture", void 0);
+], Coach.prototype, "description", void 0);
+__decorate([
+    type_graphql_1.Field(() => [CoachSkill], { defaultValue: [] }),
+    typegoose_1.prop(),
+    __metadata("design:type", Array)
+], Coach.prototype, "skills", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    typegoose_1.prop(),
+    __metadata("design:type", String)
+], Coach.prototype, "certifications", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    typegoose_1.prop(),
+    __metadata("design:type", String)
+], Coach.prototype, "students", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    typegoose_1.prop(),
+    __metadata("design:type", String)
+], Coach.prototype, "reviews", void 0);
 Coach = __decorate([
     type_graphql_1.ObjectType()
 ], Coach);
