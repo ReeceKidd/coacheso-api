@@ -31,6 +31,7 @@ type CoachSkill {
 
 type Mutation {
   becomeCoach(input: CoachInput!): Coach!
+  sendRequest(input: RequestInput!): Request!
   updateCoach(input: CoachInput!): Coach!
   updateCurrentUser(input: UserInput!): User!
 }
@@ -41,10 +42,27 @@ scalar ObjectId
 type Query {
   coach(username: String!): Coach
   coaches(skill: String): [Coach!]!
+  coachingRequests: [Request!]!
   currentCoach: Coach
   currentUser: User
   skills(skill: String): [Skill!]!
   user(userId: ObjectId!): User
+}
+
+type Request {
+  _id: ObjectId!
+  coachId: String!
+  type: RequestType!
+  userId: String!
+}
+
+input RequestInput {
+  coachId: String!
+  type: RequestType!
+}
+
+enum RequestType {
+  coaching
 }
 
 type Skill {
