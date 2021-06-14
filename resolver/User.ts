@@ -40,12 +40,17 @@ export class UserResolver {
     ctx: MyContext,
     @Arg('input') input: UserInput
   ): Promise<User> {
-    const { username, mode } = input
+    const { name, username, mode } = input
 
     const updateValues: {
+      name?: string
       username?: string
       mode?: UserMode
     } = {}
+
+    if (name) {
+      updateValues.name = name
+    }
 
     if (username) {
       updateValues.username = username

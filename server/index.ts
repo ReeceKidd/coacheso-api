@@ -74,7 +74,7 @@ async function createServer() {
       response: Response,
       _next: NextFunction
     ) => {
-      response.status(err.status || 500).send(err.message)
+      return response.status(err.status || 500).send(err.message)
     }
   )
 }

@@ -89,6 +89,7 @@ type User {
 
 input UserInput {
   mode: UserMode
+  name: String
   username: String
 }
 
