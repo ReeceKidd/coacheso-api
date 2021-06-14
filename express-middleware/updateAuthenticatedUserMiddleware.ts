@@ -1,4 +1,4 @@
-import { UserModel } from '../entity/User'
+import { UserMode, UserModel } from '../entity/User'
 import { Request, Response, NextFunction } from 'express'
 
 import axios from 'axios'
@@ -23,34 +23,30 @@ export const updateAuthenticatedUserMiddleware = async (
         headers: { Authorization: token },
       })
 
-      response.locals.user = await UserModel.findOneAndUpdate(
-        {
-          email: data.email,
-        },
-        {
-          email: data.email,
-          givenName: data.given_name,
-          familyName: data.family_name,
-          name: data.name,
-          picture: data.picture,
-          locale: data.locale,
-          emailVerified: data.email_verified,
-        }
-      )
+      response.locals.user = await UserModel.findOne({
+        email: data.email,
+      })
 
       if (!response.locals.user) {
-        const databaseUser = await UserModel.create({
-          email: data.email,
-          givenName: data.given_name,
-          familyName: data.family_name,
-          name: data.name,
-          picture: data.picture,
-          locale: data.locale,
-          emailVerified: data.email_verified,
-        })
+        const databaseUser = await UserModel.create(
+          {
+            username: Math.random().toString(36).substring(7),
+            email: data.email,
+            givenName: data.given_name,
+            familyName: data.family_name,
+            name: data.name,
+            picture: data.picture,
+            locale: data.locale,
+            emailVerified: data.email_verified,
+            mode: UserMode.student,
+          },
+          {}
+        )
+
         response.locals.user = databaseUser
       }
     }
+
     return next()
   } catch (err) {
     next(err)
