@@ -8,7 +8,7 @@ type Coach {
   certifications: String
   description: String
   name: String
-  profilePicture: String
+  picture: String
   reviews: String
   skills: [CoachSkill!]
   students: String
@@ -81,7 +81,7 @@ type User {
   familyName: String
   givenName: String
   locale: String
-  mode: UserMode!
+  mode: UserMode
   name: String
   picture: String
   username: String
