@@ -28,21 +28,17 @@ export const updateAuthenticatedUserMiddleware = async (
       })
 
       if (!response.locals.user) {
-        const databaseUser = await UserModel.create(
-          {
-            username: Math.random().toString(36).substring(7),
-            email: data.email,
-            givenName: data.given_name,
-            familyName: data.family_name,
-            name: data.name,
-            picture: data.picture,
-            locale: data.locale,
-            emailVerified: data.email_verified,
-            mode: UserMode.student,
-          },
-          {}
-        )
-
+        const databaseUser = await UserModel.create({
+          username: Math.random().toString(36).substring(7),
+          email: data.email,
+          givenName: data.given_name,
+          familyName: data.family_name,
+          name: data.name,
+          picture: data.picture,
+          locale: data.locale,
+          emailVerified: data.email_verified,
+          mode: UserMode.student,
+        })
         response.locals.user = databaseUser
       }
     }

@@ -24,7 +24,7 @@ export class User {
   @Property({ required: true })
   email: string
 
-  @Field(() => UserMode)
+  @Field(() => UserMode, { defaultValue: UserMode.student })
   @Property({ required: true })
   mode: UserMode
 

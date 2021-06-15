@@ -20,9 +20,11 @@ export class Coach {
   userId: string
 
   @Field()
+  @Property()
   username: string
 
   @Field({ nullable: true })
+  @Property()
   name?: string
 
   @Field({ nullable: true })
@@ -31,7 +33,7 @@ export class Coach {
 
   @Field({ nullable: true })
   @Property()
-  profilePicture?: string
+  picture?: string
 
   @Field({ nullable: true })
   @Property()
