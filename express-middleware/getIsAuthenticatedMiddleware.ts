@@ -4,8 +4,6 @@ import jwks from 'jwks-rsa'
 
 const client = jwks({
   cache: true,
-  rateLimit: true,
-  jwksRequestsPerMinute: 5,
   jwksUri: 'https://coacheso.eu.auth0.com/.well-known/jwks.json',
 })
 
