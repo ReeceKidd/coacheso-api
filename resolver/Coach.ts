@@ -32,7 +32,7 @@ export class CoachResolver {
     const newCoach = await CoachModel.create({
       userId: ctx.res.locals.user._id,
       username: ctx.res.locals.user.username,
-      name: ctx.res.locals.user.username,
+      name: ctx.res.locals.user.name,
       picture: ctx.res.locals.user.picture,
     })
 
