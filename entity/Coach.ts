@@ -8,8 +8,6 @@ export class CoachSkill {
   skill: string
 }
 
-// Update current coach
-
 @ObjectType()
 export class Coach {
   @Field()

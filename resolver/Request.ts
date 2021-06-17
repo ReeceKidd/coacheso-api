@@ -21,7 +21,7 @@ export class RequestResolver {
     ctx: MyContext
   ): Promise<Request[]> {
     const currentRequests = await RequestModel.find({
-      coachId: ctx.res.locals.user._id,
+      coachId: ctx.res.locals.user.coachId,
       type: RequestType.coaching,
     })
 

@@ -30,7 +30,6 @@ type CoachSkill {
 }
 
 type Mutation {
-  becomeCoach(input: CoachInput!): Coach!
   sendRequest(input: RequestInput!): Request!
   updateCoach(input: CoachInput!): Coach!
   updateCurrentUser(input: UserInput!): User!
@@ -76,6 +75,7 @@ input SkillInput {
 
 type User {
   _id: ObjectId!
+  coachId: ObjectId
   email: String!
   emailVerified: Boolean
   familyName: String
@@ -84,7 +84,7 @@ type User {
   mode: UserMode
   name: String
   picture: String
-  username: String
+  username: String!
 }
 
 input UserInput {
