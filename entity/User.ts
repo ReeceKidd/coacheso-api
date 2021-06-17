@@ -16,7 +16,7 @@ export class User {
   @Field()
   readonly _id: ObjectId
 
-  @Field({ nullable: true })
+  @Field()
   @Property({ required: true, index: true, unique: true })
   username: string
 
@@ -27,6 +27,10 @@ export class User {
   @Field(() => UserMode, { defaultValue: UserMode.student })
   @Property({ required: true })
   mode: UserMode
+
+  @Field({ nullable: true })
+  @Property()
+  coachId: ObjectId
 
   @Field({ nullable: true })
   @Property()

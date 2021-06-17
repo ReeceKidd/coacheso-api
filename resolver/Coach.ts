@@ -36,6 +36,14 @@ export class CoachResolver {
       picture: ctx.res.locals.user.picture,
     })
 
+    ctx.res.locals.user = await UserModel.findByIdAndUpdate(
+      ctx.res.locals.user._id,
+      {
+        coachId: newCoach._id,
+      },
+      { new: true }
+    )
+
     return newCoach
   }
 
@@ -49,33 +57,6 @@ export class CoachResolver {
   @Query(() => Coach, { nullable: true })
   async coach(@Arg('username') username: string): Promise<Coach | null> {
     return await CoachModel.findOne({ username })
-  }
-
-  @Mutation(() => Coach)
-  @UseMiddleware(isAuth)
-  async becomeCoach(
-    @Ctx()
-    ctx: MyContext,
-    @Arg('input') input: CoachInput
-  ): Promise<Coach> {
-    const coach = new CoachModel({
-      ...input,
-      userId: ctx.res.locals.user._id,
-      username: ctx.res.locals.username,
-      name: ctx.res.locals.name,
-    })
-
-    ctx.res.locals.user = await UserModel.findByIdAndUpdate(
-      ctx.res.locals.user._id,
-      {
-        isCoach: true,
-      },
-      { new: true }
-    )
-
-    await coach.save()
-
-    return coach
   }
 
   @Mutation(() => Coach)
