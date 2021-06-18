@@ -42,13 +42,19 @@ export class RequestResolver {
       },
       {
         $project: {
+          _id: 1,
+          user: { $arrayElemAt: ['$user', 0] },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
           username: '$user.username',
           name: '$user.name',
           picture: '$user.picture',
         },
       },
     ])
-    // Need to get this projecting properly
     return coachingRequests
   }
 
