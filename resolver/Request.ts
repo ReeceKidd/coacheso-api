@@ -11,21 +11,45 @@ import { isAuth } from '../graphql-middleware/isAuth'
 import { Request, RequestModel, RequestType } from '../entity/Request'
 import { MyContext } from '../types/MyContext'
 import { RequestInput } from '../types/RequestInput'
+import { CoachingRequest } from '../types/CoachingRequest'
 
 @Resolver(() => Request)
 export class RequestResolver {
-  @Query(() => [Request])
+  @Query(() => [CoachingRequest])
   @UseMiddleware(isAuth)
   async coachingRequests(
     @Ctx()
     ctx: MyContext
-  ): Promise<Request[]> {
-    const currentRequests = await RequestModel.find({
-      coachId: ctx.res.locals.user.coachId,
-      type: RequestType.coaching,
-    })
-
-    return currentRequests
+  ): Promise<CoachingRequest[]> {
+    const coachingRequests = await RequestModel.aggregate([
+      {
+        $addFields: {
+          user_id: { $toObjectId: '$userId' },
+        },
+      },
+      {
+        $match: {
+          coachId: ctx.res.locals.user.coachId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $project: {
+          username: '$user.username',
+          name: '$user.name',
+          picture: '$user.picture',
+        },
+      },
+    ])
+    // Need to get this projecting properly
+    return coachingRequests
   }
 
   @Mutation(() => Request)

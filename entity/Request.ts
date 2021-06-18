@@ -17,11 +17,11 @@ export class Request {
 
   @Field()
   @Property({ required: true })
-  coachId: string
+  coachId: ObjectId
 
   @Field()
   @Property({ required: true })
-  userId: string
+  userId: ObjectId
 }
 
 export const RequestModel = getModelForClass(Request)
