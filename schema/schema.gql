@@ -37,7 +37,7 @@ type CoachingRequest {
 }
 
 type Mutation {
-  respondToRequest(input: RequestInput!): Request!
+  respondToRequest(input: RespondToRequestInput!): Request!
   sendRequest(input: RequestInput!): Request!
   updateCoach(input: CoachInput!): Coach!
   updateCurrentUser(input: UserInput!): User!
@@ -80,6 +80,11 @@ enum RequestStatus {
 
 enum RequestType {
   coaching
+}
+
+input RespondToRequestInput {
+  _id: ObjectId!
+  status: RequestStatus!
 }
 
 type Skill {
