@@ -18,6 +18,7 @@ import { CoachModel } from '../entity/Coach'
 import { MyContext } from '../types/MyContext'
 import { RequestInput } from '../types/RequestInput'
 import { CoachingRequest } from '../types/CoachingRequest'
+import { RespondToRequestInput } from '../types/RespondToRequestInput'
 
 @Resolver(() => Request)
 export class RequestResolver {
@@ -86,7 +87,7 @@ export class RequestResolver {
   async respondToRequest(
     @Ctx()
     ctx: MyContext,
-    @Arg('input') input: RequestInput
+    @Arg('input') input: RespondToRequestInput
   ): Promise<Request> {
     const request = await RequestModel.findOneAndUpdate(
       { _id: input._id, coachId: ctx.res.locals.user.coachId },
@@ -98,10 +99,10 @@ export class RequestResolver {
       throw new Error('Request does not exist')
     }
 
-    if (input.status === RequestStatus.accept && input.userId) {
+    if (input.status === RequestStatus.accept) {
       await CoachModel.findOneAndUpdate(
-        { userId: ctx.res.locals.user._id },
-        { $addToSet: { students: input.userId } }
+        { _id: ctx.res.locals.user.coachId },
+        { $addToSet: { students: request.userId } }
       )
     }
     return request
