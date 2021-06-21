@@ -8,7 +8,13 @@ import {
 } from 'type-graphql'
 
 import { isAuth } from '../graphql-middleware/isAuth'
-import { Request, RequestModel, RequestType } from '../entity/Request'
+import {
+  Request,
+  RequestModel,
+  RequestStatus,
+  RequestType,
+} from '../entity/Request'
+import { CoachModel } from '../entity/Coach'
 import { MyContext } from '../types/MyContext'
 import { RequestInput } from '../types/RequestInput'
 import { CoachingRequest } from '../types/CoachingRequest'
@@ -30,6 +36,7 @@ export class RequestResolver {
       {
         $match: {
           coachId: ctx.res.locals.user.coachId,
+          status: RequestStatus.awaitingResponse,
         },
       },
       {
@@ -68,8 +75,35 @@ export class RequestResolver {
     const request = new RequestModel({
       ...input,
       userId: ctx.res.locals.user._id,
+      type: RequestType.coaching,
     })
     await request.save()
+    return request
+  }
+
+  @Mutation(() => Request)
+  @UseMiddleware(isAuth)
+  async respondToRequest(
+    @Ctx()
+    ctx: MyContext,
+    @Arg('input') input: RequestInput
+  ): Promise<Request> {
+    const request = await RequestModel.findOneAndUpdate(
+      { _id: input._id, coachId: ctx.res.locals.user.coachId },
+      {
+        status: input.status,
+      }
+    )
+    if (!request) {
+      throw new Error('Request does not exist')
+    }
+
+    if (input.status === RequestStatus.accept && input.userId) {
+      await CoachModel.findOneAndUpdate(
+        { userId: ctx.res.locals.user._id },
+        { $addToSet: { students: input.userId } }
+      )
+    }
     return request
   }
 }

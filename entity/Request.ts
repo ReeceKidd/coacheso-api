@@ -1,10 +1,24 @@
 import { getModelForClass, prop as Property } from '@typegoose/typegoose'
 import { ObjectId } from 'mongodb'
-import { Field, ObjectType } from 'type-graphql'
+import { Field, ObjectType, registerEnumType } from 'type-graphql'
 
 export enum RequestType {
   coaching = 'coaching',
 }
+
+registerEnumType(RequestType, {
+  name: 'RequestType',
+})
+
+export enum RequestStatus {
+  accept = 'accepted',
+  decline = 'declined',
+  awaitingResponse = 'awaitingResponse',
+}
+
+registerEnumType(RequestStatus, {
+  name: 'RequestStatus',
+})
 
 @ObjectType()
 export class Request {
@@ -22,6 +36,10 @@ export class Request {
   @Field()
   @Property({ required: true })
   userId: ObjectId
+
+  @Field()
+  @Property({ default: RequestStatus.awaitingResponse })
+  status: RequestStatus
 }
 
 export const RequestModel = getModelForClass(Request)
