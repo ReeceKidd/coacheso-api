@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { InputType, Field, registerEnumType } from 'type-graphql'
 
-import { Request, RequestType } from '../entity/Request'
+import { Request, RequestStatus, RequestType } from '../entity/Request'
 
 registerEnumType(RequestType, {
   name: 'RequestType',
@@ -9,9 +9,18 @@ registerEnumType(RequestType, {
 
 @InputType()
 export class RequestInput implements Partial<Request> {
-  @Field()
+  @Field({ nullable: true })
+  _id?: ObjectId
+
+  @Field({ nullable: true })
   coachId?: ObjectId
 
-  @Field(() => RequestType)
+  @Field({ nullable: true })
+  userId?: ObjectId
+
+  @Field(() => RequestType, { nullable: true })
   type?: RequestType
+
+  @Field(() => RequestStatus, { nullable: true })
+  status?: RequestStatus
 }

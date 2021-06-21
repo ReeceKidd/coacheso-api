@@ -11,7 +11,7 @@ type Coach {
   picture: String
   reviews: String
   skills: [CoachSkill!]
-  students: String
+  students: [ObjectId!]
   title: String
   userId: String!
   username: String!
@@ -37,6 +37,7 @@ type CoachingRequest {
 }
 
 type Mutation {
+  respondToRequest(input: RequestInput!): Request!
   sendRequest(input: RequestInput!): Request!
   updateCoach(input: CoachInput!): Coach!
   updateCurrentUser(input: UserInput!): User!
@@ -58,13 +59,23 @@ type Query {
 type Request {
   _id: ObjectId!
   coachId: ObjectId!
+  status: String!
   type: RequestType!
   userId: ObjectId!
 }
 
 input RequestInput {
-  coachId: ObjectId!
-  type: RequestType!
+  _id: ObjectId
+  coachId: ObjectId
+  status: RequestStatus
+  type: RequestType
+  userId: ObjectId
+}
+
+enum RequestStatus {
+  accept
+  awaitingResponse
+  decline
 }
 
 enum RequestType {

@@ -45,9 +45,9 @@ export class Coach {
   @Property()
   certifications?: string
 
-  @Field({ nullable: true })
+  @Field(() => [ObjectId], { nullable: true })
   @Property()
-  students?: string
+  students?: ObjectId[]
 
   @Field({ nullable: true })
   @Property()
