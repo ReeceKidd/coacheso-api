@@ -25,6 +25,20 @@ input CoachInput {
   title: String
 }
 
+type CoachResponse {
+  _id: ObjectId!
+  certifications: String
+  description: String
+  name: String
+  picture: String
+  reviews: String
+  skills: [CoachSkill!]
+  students: [Student!]
+  title: String
+  userId: String!
+  username: String!
+}
+
 type CoachSkill {
   skill: String!
 }
@@ -50,7 +64,7 @@ type Query {
   coach(username: String!): Coach
   coaches(skill: String): [Coach!]!
   coachingRequests: [CoachingRequest!]!
-  currentCoach: Coach
+  currentCoach: CoachResponse
   currentUser: User
   skills(skill: String): [Skill!]!
   user(userId: ObjectId!): User
@@ -94,6 +108,13 @@ type Skill {
 
 input SkillInput {
   skill: String!
+}
+
+type Student {
+  name: String!
+  picture: String!
+  userId: String!
+  username: String!
 }
 
 type User {
