@@ -30,11 +30,6 @@ export class RequestResolver {
   ): Promise<CoachingRequest[]> {
     const coachingRequests = await RequestModel.aggregate([
       {
-        $addFields: {
-          user_id: { $toObjectId: '$userId' },
-        },
-      },
-      {
         $match: {
           coachId: ctx.res.locals.user.coachId,
           status: RequestStatus.awaitingResponse,
@@ -43,7 +38,7 @@ export class RequestResolver {
       {
         $lookup: {
           from: 'users',
-          localField: 'user_id',
+          localField: 'userId',
           foreignField: '_id',
           as: 'user',
         },
@@ -93,7 +88,8 @@ export class RequestResolver {
       { _id: input._id, coachId: ctx.res.locals.user.coachId },
       {
         status: input.status,
-      }
+      },
+      { new: true }
     )
     if (!request) {
       throw new Error('Request does not exist')

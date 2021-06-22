@@ -12,39 +12,60 @@ import { CoachInput, SkillInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
 import { MyContext } from '../types/MyContext'
+import { CoachResponse } from '../types/CoachResponse'
 
 @Resolver(() => Coach)
 export class CoachResolver {
-  @Query(() => Coach, { nullable: true })
+  @Query(() => CoachResponse, { nullable: true })
   @UseMiddleware(isAuth)
   async currentCoach(
     @Ctx()
     ctx: MyContext
-  ): Promise<Coach | null> {
-    const currentCoach = await CoachModel.findOne({
-      userId: ctx.res.locals.user._id,
-    })
+  ): Promise<CoachResponse | null> {
+    try {
+      const currentCoach: CoachResponse[] = await CoachModel.aggregate([
+        {
+          $match: {
+            _id: ctx.res.locals.user.coachId,
+          },
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'students',
+            foreignField: '_id',
+            as: 'students',
+          },
+        },
+        {
+          $limit: 1,
+        },
+      ])
 
-    if (currentCoach) {
-      return currentCoach
+      if (currentCoach.length > 0) {
+        return currentCoach[0]
+      }
+
+      const newCoach = await CoachModel.create({
+        userId: ctx.res.locals.user._id,
+        username: ctx.res.locals.user.username,
+        name: ctx.res.locals.user.name,
+        picture: ctx.res.locals.user.picture,
+      })
+
+      ctx.res.locals.user = await UserModel.findByIdAndUpdate(
+        ctx.res.locals.user._id,
+        {
+          coachId: newCoach._id,
+        },
+        { new: true }
+      ).lean()
+
+      return { ...newCoach, students: [] }
+    } catch (err) {
+      console.log('Error', err)
+      return null
     }
-
-    const newCoach = await CoachModel.create({
-      userId: ctx.res.locals.user._id,
-      username: ctx.res.locals.user.username,
-      name: ctx.res.locals.user.name,
-      picture: ctx.res.locals.user.picture,
-    })
-
-    ctx.res.locals.user = await UserModel.findByIdAndUpdate(
-      ctx.res.locals.user._id,
-      {
-        coachId: newCoach._id,
-      },
-      { new: true }
-    )
-
-    return newCoach
   }
 
   @Query(() => [Coach])
