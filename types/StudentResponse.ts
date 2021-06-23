@@ -1,9 +1,9 @@
-import { CoachSkill } from '../entity/Coach'
+import { StudentSkill } from '../entity/Student'
 import { ObjectType, Field } from 'type-graphql'
 import { ObjectId } from 'mongodb'
 
 @ObjectType()
-export class Student {
+export class Coach {
   @Field()
   userId: string
 
@@ -18,7 +18,7 @@ export class Student {
 }
 
 @ObjectType()
-export class CoachResponse {
+export class StudentResponse {
   @Field()
   readonly _id: ObjectId
 
@@ -32,22 +32,22 @@ export class CoachResponse {
   name?: string
 
   @Field({ nullable: true })
-  picture?: string
+  title?: string
 
   @Field({ nullable: true })
-  title?: string
+  picture?: string
 
   @Field({ nullable: true })
   description?: string
 
-  @Field(() => [CoachSkill], { defaultValue: [] })
-  skills?: CoachSkill[]
+  @Field(() => [StudentSkill], { defaultValue: [] })
+  skills?: StudentSkill[]
 
   @Field({ nullable: true })
   certifications?: string
 
-  @Field(() => [Student], { nullable: true })
-  students?: Student[]
+  @Field(() => [Coach], { nullable: true })
+  coaches?: Coach[]
 
   @Field({ nullable: true })
   reviews?: string

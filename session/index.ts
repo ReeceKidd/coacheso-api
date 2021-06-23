@@ -5,10 +5,11 @@ const { DATABASE_URI } = getServiceConfig()
 
 export default async function createSession(): Promise<void> {
   const options = {
+    useFindAndModify: true,
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false,
     useUnifiedTopology: true,
+    autoIndex: true,
   }
   await connect(DATABASE_URI, options)
 }

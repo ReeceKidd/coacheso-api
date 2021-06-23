@@ -22,49 +22,70 @@ export class CoachResolver {
     @Ctx()
     ctx: MyContext
   ): Promise<CoachResponse | null> {
-    try {
-      const currentCoach: CoachResponse[] = await CoachModel.aggregate([
-        {
-          $match: {
-            _id: ctx.res.locals.user.coachId,
-          },
+    const currentCoach: CoachResponse[] = await CoachModel.aggregate([
+      {
+        $match: {
+          _id: ctx.res.locals.user.coachId,
         },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'students',
-            foreignField: '_id',
-            as: 'students',
-          },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'students',
+          foreignField: '_id',
+          as: 'students',
         },
-        {
-          $limit: 1,
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
         },
-      ])
-
-      if (currentCoach.length > 0) {
-        return currentCoach[0]
-      }
-
-      const newCoach = await CoachModel.create({
-        userId: ctx.res.locals.user._id,
-        username: ctx.res.locals.user.username,
-        name: ctx.res.locals.user.name,
-        picture: ctx.res.locals.user.picture,
-      })
-
-      ctx.res.locals.user = await UserModel.findByIdAndUpdate(
-        ctx.res.locals.user._id,
-        {
-          coachId: newCoach._id,
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        $project: {
+          userId: 1,
+          username: '$user.username',
+          name: '$user.name',
+          picture: '$user.picture',
+          title: 1,
+          description: 1,
+          skills: 1,
+          students: 1,
+          reviews: 1,
         },
-        { new: true }
-      ).lean()
+      },
+      {
+        $limit: 1,
+      },
+    ])
 
-      return { ...newCoach, students: [] }
-    } catch (err) {
-      console.log('Error', err)
-      return null
+    if (currentCoach.length > 0) {
+      return currentCoach[0]
+    }
+
+    const newCoach = await CoachModel.create({
+      userId: ctx.res.locals.user._id,
+    })
+
+    ctx.res.locals.user = await UserModel.findByIdAndUpdate(
+      ctx.res.locals.user._id,
+      {
+        coachId: newCoach._id,
+      },
+      { new: true }
+    ).lean()
+
+    return {
+      ...newCoach,
+      students: [],
+      username: ctx.res.locals.user.username,
+      userId: ctx.res.locals.user._id,
     }
   }
 
@@ -75,9 +96,40 @@ export class CoachResolver {
     return CoachModel.find(skill ? { 'skills.skill': skill } : {})
   }
 
-  @Query(() => Coach, { nullable: true })
-  async coach(@Arg('username') username: string): Promise<Coach | null> {
-    return await CoachModel.findOne({ username })
+  @Query(() => CoachResponse, { nullable: true })
+  async coach(
+    @Arg('username') username: string
+  ): Promise<CoachResponse | null> {
+    const coaches: CoachResponse[] = await CoachModel.aggregate([
+      {
+        $match: {
+          username,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'students',
+          foreignField: '_id',
+          as: 'students',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'students',
+          foreignField: '_id',
+          as: 'students',
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ])
+    if (coaches[0]) {
+      return coaches[0]
+    }
+    return null
   }
 
   @Mutation(() => Coach)

@@ -19,6 +19,7 @@ import { MyContext } from '../types/MyContext'
 import { RequestInput } from '../types/RequestInput'
 import { CoachingRequest } from '../types/CoachingRequest'
 import { RespondToRequestInput } from '../types/RespondToRequestInput'
+import { StudentModel } from '../entity/Student'
 
 @Resolver(() => Request)
 export class RequestResolver {
@@ -61,6 +62,30 @@ export class RequestResolver {
     return coachingRequests
   }
 
+  @Query(() => Boolean)
+  async canRequestCoaching(
+    @Ctx()
+    ctx: MyContext,
+    @Arg('coachUsername', { nullable: true }) coachUsername?: string
+  ): Promise<boolean> {
+    const coach = await CoachModel.findOne({
+      username: coachUsername,
+    })
+    if (
+      coach?.students?.find(
+        (studentId) => studentId === ctx.res.locals.user._id
+      )
+    ) {
+      return false
+    }
+    const request = await RequestModel.findOne({
+      userId: ctx.res.locals.user._id,
+      coachId: coach?._id,
+    }).lean()
+
+    return Boolean(!request)
+  }
+
   @Mutation(() => Request)
   @UseMiddleware(isAuth)
   async sendRequest(
@@ -100,7 +125,14 @@ export class RequestResolver {
         { _id: ctx.res.locals.user.coachId },
         { $addToSet: { students: request.userId } }
       )
+      await StudentModel.findOneAndUpdate(
+        {
+          _id: request.userId,
+        },
+        { $addToSet: { coaches: ctx.res.locals.user.coachId } }
+      )
     }
+
     return request
   }
 }

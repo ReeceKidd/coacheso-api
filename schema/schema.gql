@@ -7,14 +7,11 @@ type Coach {
   _id: ObjectId!
   certifications: String
   description: String
-  name: String
-  picture: String
   reviews: String
   skills: [CoachSkill!]
   students: [ObjectId!]
   title: String
-  userId: String!
-  username: String!
+  userId: ObjectId!
 }
 
 input CoachInput {
@@ -61,7 +58,8 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  coach(username: String!): Coach
+  canRequestCoaching(coachUsername: String): Boolean!
+  coach(username: String!): CoachResponse
   coaches(skill: String): [Coach!]!
   coachingRequests: [CoachingRequest!]!
   currentCoach: CoachResponse
@@ -119,15 +117,17 @@ type Student {
 
 type User {
   _id: ObjectId!
+  auth0Sub: String!
   coachId: ObjectId
   email: String!
   emailVerified: Boolean
   familyName: String
   givenName: String
   locale: String
-  mode: UserMode
+  mode: String
   name: String
   picture: String
+  studentId: ObjectId
   username: String!
 }
 
