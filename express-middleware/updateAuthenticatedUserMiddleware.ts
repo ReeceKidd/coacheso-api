@@ -4,6 +4,8 @@ import { Request, Response, NextFunction } from 'express'
 import axios from 'axios'
 
 import { getServiceConfig } from '../getServiceConfig'
+import { StudentModel } from '../entity/Student'
+import { CoachModel } from '../entity/Coach'
 
 const { AUTH0_BASE_URL } = getServiceConfig()
 
@@ -28,9 +30,10 @@ export const updateAuthenticatedUserMiddleware = async (
       })
 
       if (!response.locals.user) {
-        const databaseUser = await UserModel.create({
-          username: Math.random().toString(36).substring(7),
+        const user = await UserModel.create({
+          auth0Sub: data.sub,
           email: data.email,
+          username: Math.random().toString(36).substring(7),
           givenName: data.given_name,
           familyName: data.family_name,
           name: data.name,
@@ -39,7 +42,18 @@ export const updateAuthenticatedUserMiddleware = async (
           emailVerified: data.email_verified,
           mode: UserMode.student,
         })
-        response.locals.user = databaseUser
+        const student = await StudentModel.create({
+          userId: user._id,
+        })
+        const coach = await CoachModel.create({
+          userId: user._id,
+        })
+
+        response.locals.user = await UserModel.findByIdAndUpdate(
+          user._id,
+          { coachId: coach._id, studentId: student._id },
+          { new: true }
+        )
       }
     }
 

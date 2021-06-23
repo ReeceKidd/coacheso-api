@@ -3,13 +3,13 @@ import { ObjectId } from 'mongodb'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
-export class CoachSkill {
+export class StudentSkill {
   @Field()
   skill: string
 }
 
 @ObjectType()
-export class Coach {
+export class Student {
   @Field()
   readonly _id: ObjectId
 
@@ -25,21 +25,13 @@ export class Coach {
   @Property()
   description?: string
 
-  @Field(() => [CoachSkill], { defaultValue: [] })
+  @Field(() => [StudentSkill], { defaultValue: [] })
   @Property()
-  skills?: CoachSkill[]
-
-  @Field({ nullable: true })
-  @Property()
-  certifications?: string
+  skills?: StudentSkill[]
 
   @Field(() => [ObjectId], { nullable: true })
   @Property()
-  students?: ObjectId[]
-
-  @Field({ nullable: true })
-  @Property()
-  reviews?: string
+  coaches?: ObjectId[]
 }
 
-export const CoachModel = getModelForClass(Coach)
+export const StudentModel = getModelForClass(Student)

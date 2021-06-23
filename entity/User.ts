@@ -17,20 +17,28 @@ export class User {
   readonly _id: ObjectId
 
   @Field()
+  @Property({ required: true, unique: true, index: true })
+  auth0Sub: string
+
+  @Field()
   @Property({ required: true, index: true, unique: true })
   username: string
 
   @Field()
-  @Property({ required: true })
+  @Property({ required: true, unique: true })
   email: string
 
-  @Field(() => UserMode, { defaultValue: UserMode.student })
+  @Field({ defaultValue: UserMode.student })
   @Property({ required: true })
-  mode: UserMode
+  mode: string
 
   @Field({ nullable: true })
   @Property()
-  coachId: ObjectId
+  studentId?: ObjectId
+
+  @Field({ nullable: true })
+  @Property()
+  coachId?: ObjectId
 
   @Field({ nullable: true })
   @Property()
