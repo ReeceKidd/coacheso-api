@@ -36,30 +36,6 @@ export class StudentResolver {
         },
       },
       {
-        $lookup: {
-          from: 'users',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
-        },
-      },
-      {
-        $unwind: '$user',
-      },
-      {
-        $project: {
-          userId: 1,
-          username: '$user.username',
-          name: '$user.name',
-          picture: '$user.picture',
-          title: 1,
-          description: 1,
-          skills: 1,
-          students: 1,
-          reviews: 1,
-        },
-      },
-      {
         $limit: 1,
       },
     ])

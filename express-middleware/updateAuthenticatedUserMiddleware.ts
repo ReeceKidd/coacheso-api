@@ -44,9 +44,15 @@ export const updateAuthenticatedUserMiddleware = async (
         })
         const student = await StudentModel.create({
           userId: user._id,
+          username: user.username,
+          name: user.name,
+          picture: user.picture,
         })
         const coach = await CoachModel.create({
           userId: user._id,
+          username: user.username,
+          name: user.name,
+          picture: user.picture,
         })
 
         response.locals.user = await UserModel.findByIdAndUpdate(

@@ -16,7 +16,7 @@ export class RequestInput implements Partial<Request> {
   coachId?: ObjectId
 
   @Field({ nullable: true })
-  userId?: ObjectId
+  studentId?: ObjectId
 
   @Field(() => RequestType, { nullable: true })
   type?: RequestType
