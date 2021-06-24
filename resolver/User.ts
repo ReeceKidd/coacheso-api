@@ -12,6 +12,8 @@ import { isAuth } from '../graphql-middleware/isAuth'
 import { User, UserMode, UserModel } from '../entity/User'
 import { ObjectIdScalar } from '../schema/object-id.scalar'
 import { UserInput } from '../types/UserInput'
+import { CoachModel } from '../entity/Coach'
+import { StudentModel } from '../entity/Student'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -64,6 +66,15 @@ export class UserResolver {
       ctx.res.locals.user._id,
       updateValues,
       { new: true }
+    )
+
+    await CoachModel.findByIdAndUpdate(
+      ctx.res.locals.user.coachId,
+      updateValues
+    )
+    await StudentModel.findByIdAndUpdate(
+      ctx.res.locals.user.studentId,
+      updateValues
     )
 
     if (!user) {
