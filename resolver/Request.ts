@@ -123,11 +123,11 @@ export class RequestResolver {
     if (input.status === RequestStatus.accept) {
       await CoachModel.findOneAndUpdate(
         { _id: ctx.res.locals.user.coachId },
-        { $addToSet: { students: request.userId } }
+        { $addToSet: { students: request.studentId } }
       )
       await StudentModel.findOneAndUpdate(
         {
-          _id: request.userId,
+          _id: request.studentId,
         },
         { $addToSet: { coaches: ctx.res.locals.user.coachId } }
       )

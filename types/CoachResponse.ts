@@ -23,7 +23,7 @@ export class CoachResponse {
   readonly _id: ObjectId
 
   @Field()
-  userId: string
+  userId: ObjectId
 
   @Field()
   username: string

@@ -37,30 +37,6 @@ export class CoachResolver {
         },
       },
       {
-        $lookup: {
-          from: 'users',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
-        },
-      },
-      {
-        $unwind: '$user',
-      },
-      {
-        $project: {
-          userId: 1,
-          username: '$user.username',
-          name: '$user.name',
-          picture: '$user.picture',
-          title: 1,
-          description: 1,
-          skills: 1,
-          students: 1,
-          reviews: 1,
-        },
-      },
-      {
         $limit: 1,
       },
     ])
@@ -73,6 +49,10 @@ export class CoachResolver {
       userId: ctx.res.locals.user._id,
     })
 
+    if (!newCoach) {
+      throw new Error('Unable to create new coach')
+    }
+
     ctx.res.locals.user = await UserModel.findByIdAndUpdate(
       ctx.res.locals.user._id,
       {
@@ -81,12 +61,7 @@ export class CoachResolver {
       { new: true }
     ).lean()
 
-    return {
-      ...newCoach,
-      students: [],
-      username: ctx.res.locals.user.username,
-      userId: ctx.res.locals.user._id,
-    }
+    return { ...newCoach, students: [] }
   }
 
   @Query(() => [Coach])
@@ -104,14 +79,6 @@ export class CoachResolver {
       {
         $match: {
           username,
-        },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'students',
-          foreignField: '_id',
-          as: 'students',
         },
       },
       {

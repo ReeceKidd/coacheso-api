@@ -17,6 +17,18 @@ export class Student {
   @Property({ unique: true, index: true })
   userId: ObjectId
 
+  @Field()
+  @Property({ unique: true, index: true })
+  username: string
+
+  @Field()
+  @Property()
+  name: string
+
+  @Field()
+  @Property()
+  picture: string
+
   @Field({ nullable: true })
   @Property()
   title?: string

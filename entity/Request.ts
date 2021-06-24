@@ -35,7 +35,7 @@ export class Request {
 
   @Field()
   @Property({ required: true })
-  userId: ObjectId
+  studentId: ObjectId
 
   @Field()
   @Property({ default: RequestStatus.awaitingResponse })
