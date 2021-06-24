@@ -5,7 +5,7 @@ const { DATABASE_URI } = getServiceConfig()
 
 export default async function createSession(): Promise<void> {
   const options = {
-    useFindAndModify: true,
+    useFindAndModify: false,
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
