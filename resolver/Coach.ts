@@ -8,11 +8,12 @@ import {
 } from 'type-graphql'
 
 import { isAuth } from '../graphql-middleware/isAuth'
-import { CoachInput, SkillInput } from '../types/CoachInput'
+import { CoachInput } from '../types/CoachInput'
 import { Coach, CoachModel } from '../entity/Coach'
 import { UserModel } from '../entity/User'
 import { MyContext } from '../types/MyContext'
 import { CoachResponse } from '../types/CoachResponse'
+import { SkillInput } from '../types/SkillInput'
 
 @Resolver(() => Coach)
 export class CoachResolver {

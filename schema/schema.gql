@@ -19,7 +19,6 @@ type Coach {
 
 input CoachInput {
   description: String
-  name: String
   profilePicture: String
   skills: [SkillInput!]
   title: String
@@ -33,7 +32,7 @@ type CoachResponse {
   picture: String
   reviews: String
   skills: [CoachSkill!]
-  students: [Student!]
+  students: [CoachStudent!]
   title: String
   userId: ObjectId!
   username: String!
@@ -41,6 +40,13 @@ type CoachResponse {
 
 type CoachSkill {
   skill: String!
+}
+
+type CoachStudent {
+  name: String!
+  picture: String!
+  userId: String!
+  username: String!
 }
 
 type CoachingRequest {
@@ -55,6 +61,7 @@ type Mutation {
   sendRequest(input: RequestInput!): Request!
   updateCoach(input: CoachInput!): Coach!
   updateCurrentUser(input: UserInput!): User!
+  updateStudent(input: StudentInput!): Student!
 }
 
 """Mongo object id scalar type"""
@@ -66,6 +73,7 @@ type Query {
   coaches(skill: String): [Coach!]!
   coachingRequests: [CoachingRequest!]!
   currentCoach: CoachResponse
+  currentStudent: StudentResponse
   currentUser: User
   skills(skill: String): [Skill!]!
   user(userId: ObjectId!): User
@@ -112,15 +120,50 @@ input SkillInput {
 }
 
 type Student {
+  _id: ObjectId!
+  coaches: [ObjectId!]
+  description: String
+  name: String!
+  picture: String!
+  skills: [StudentSkill!]
+  title: String
+  userId: ObjectId!
+  username: String!
+}
+
+type StudentCoach {
   name: String!
   picture: String!
   userId: String!
   username: String!
 }
 
+input StudentInput {
+  description: String
+  skills: [SkillInput!]
+  title: String
+}
+
+type StudentResponse {
+  _id: ObjectId!
+  certifications: String
+  coaches: [StudentCoach!]
+  description: String
+  name: String
+  picture: String
+  reviews: String
+  skills: [StudentSkill!]
+  title: String
+  userId: String!
+  username: String!
+}
+
+type StudentSkill {
+  skill: String!
+}
+
 type User {
   _id: ObjectId!
-  auth0Sub: String!
   coachId: ObjectId
   email: String!
   emailVerified: Boolean

@@ -3,7 +3,7 @@ import { ObjectType, Field } from 'type-graphql'
 import { ObjectId } from 'mongodb'
 
 @ObjectType()
-export class Coach {
+export class StudentCoach {
   @Field()
   userId: string
 
@@ -46,8 +46,8 @@ export class StudentResponse {
   @Field({ nullable: true })
   certifications?: string
 
-  @Field(() => [Coach], { nullable: true })
-  coaches?: Coach[]
+  @Field(() => [StudentCoach], { nullable: true })
+  coaches?: StudentCoach[]
 
   @Field({ nullable: true })
   reviews?: string

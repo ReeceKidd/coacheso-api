@@ -31,7 +31,6 @@ export const updateAuthenticatedUserMiddleware = async (
 
       if (!response.locals.user) {
         const user = await UserModel.create({
-          auth0Sub: data.sub,
           email: data.email,
           username: Math.random().toString(36).substring(7),
           givenName: data.given_name,

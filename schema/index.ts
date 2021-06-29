@@ -9,10 +9,17 @@ import { CoachResolver } from '../resolver/Coach'
 import { UserResolver } from '../resolver/User'
 import { SkillResolver } from '../resolver/Skill'
 import { RequestResolver } from '../resolver/Request'
+import { StudentResolver } from '../resolver/Student'
 
 export default async function createSchema(): Promise<GraphQLSchema> {
   const schema = await buildSchema({
-    resolvers: [CoachResolver, UserResolver, SkillResolver, RequestResolver],
+    resolvers: [
+      CoachResolver,
+      StudentResolver,
+      UserResolver,
+      SkillResolver,
+      RequestResolver,
+    ],
     emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
     globalMiddlewares: [TypegooseMiddleware],
     scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],
