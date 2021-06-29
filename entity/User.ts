@@ -17,10 +17,6 @@ export class User {
   readonly _id: ObjectId
 
   @Field()
-  @Property({ required: true, unique: true, index: true })
-  auth0Sub: string
-
-  @Field()
   @Property({ required: true, index: true, unique: true })
   username: string
 
