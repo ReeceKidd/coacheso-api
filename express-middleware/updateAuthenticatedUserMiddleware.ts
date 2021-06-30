@@ -30,7 +30,7 @@ export const updateAuthenticatedUserMiddleware = async (
       })
 
       if (!response.locals.user) {
-        const user = await UserModel.create({
+        response.locals.user = await UserModel.create({
           email: data.email,
           username: Math.random().toString(36).substring(7),
           givenName: data.given_name,
@@ -42,20 +42,20 @@ export const updateAuthenticatedUserMiddleware = async (
           mode: UserMode.student,
         })
         const student = await StudentModel.create({
-          userId: user._id,
-          username: user.username,
-          name: user.name,
-          picture: user.picture,
+          userId: response.locals.user._id,
+          username: response.locals.user.username,
+          name: response.locals.user.name,
+          picture: response.locals.user.picture,
         })
         const coach = await CoachModel.create({
-          userId: user._id,
-          username: user.username,
-          name: user.name,
-          picture: user.picture,
+          userId: response.locals.user._id,
+          username: response.locals.user.username,
+          name: response.locals.user.name,
+          picture: response.locals.user.picture,
         })
 
         response.locals.user = await UserModel.findByIdAndUpdate(
-          user._id,
+          response.locals.user._id,
           { coachId: coach._id, studentId: student._id },
           { new: true }
         )
