@@ -21,7 +21,7 @@ export class User {
   username: string
 
   @Field()
-  @Property({ required: true, unique: true })
+  @Property({ required: true, index: true, unique: true })
   email: string
 
   @Field({ defaultValue: UserMode.student })
